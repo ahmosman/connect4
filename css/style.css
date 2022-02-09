@@ -1,0 +1,101 @@
+body{
+    font-family: 'Rajdhani', sans-serif;
+    background-color: violet;
+    height: 90vh;
+}
+.hidden{
+    display: none;
+}
+
+.main-div, .main-div form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-style: italic;
+    height: 100%;
+}
+section h1{
+    font-size: 2.4em;
+    width: 70%;
+    text-align: center;
+}
+h2{
+    text-align: center;
+}
+.btn-main,.btn-main:focus{
+    outline: 0;
+    border-radius: 10px;
+    background-color: #a610a6;
+    margin: 10px auto;
+    height: 40px;
+    width: 130px;
+    font-weight: bolder;
+}
+
+.btn-main a{
+    text-decoration: none;
+    color: black;
+}
+
+.loader {
+    border: 5px solid #e1b8fc; /* Light grey */
+    border-top: 5px solid #690569; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1500ms linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.game-id-div{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+}
+.game-data-input{
+    height: 40px;
+    width: 150px;
+    border-radius: 25px;
+    border: 2px solid #c006c0;
+    padding: 5px 15px;
+    font-size: 1.5em;
+    text-align: center;
+}
+.game-data-input:focus{
+    outline: 2px solid #ffc6ff;
+}
+
+.error-text{
+    color: darkred;
+    width: 150px;
+    text-align: center;
+}
+.game-info-div{
+    border-radius: 25px;
+    background-color: #d139d1;
+    padding: 10px;
+    font-weight: 500;
+}
+.board-table {
+    border-spacing: 10px;
+    border-radius: 20px;
+}
+
+.board-table, .board-table td{
+    border: 3px solid #520152;
+}
+.board-table td {
+    border-radius: 50px;
+    padding: 30px;
+}
