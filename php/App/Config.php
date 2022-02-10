@@ -1,4 +1,9 @@
 <?php
+
+namespace App;
+
+use mysqli;
+
 class Config
 {
     private string $hostname;
@@ -6,13 +11,16 @@ class Config
     private string $password;
     private string $db;
     private mysqli $conn;
-    public function __construct(){
+
+    public function __construct()
+    {
         $this->hostname = "localhost";
         $this->username = "root";
         $this->password = "";
-        $this->db = "game_competitive";
-        $this->conn = new mysqli($this->hostname,$this->username,$this->password,$this->db);
+        $this->db = "connect4";
+        $this->conn = new mysqli($this->hostname, $this->username, $this->password, $this->db);
     }
+
     public function getConn()
     {
         return $this->conn;

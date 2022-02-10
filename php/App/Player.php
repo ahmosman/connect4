@@ -1,14 +1,21 @@
 <?php
-include_once "Config.php";
+
+namespace App;
+require_once 'Config.php';
+
+use mysqli;
 
 class Player
 {
     public int $playerId;
     public int $opponentId;
     public string $nickname;
+
+//kolejność statusów: NONE -> WAITING -> CONFIRMING -> READY -> PLAYER/OPPONENT_MOVE -> WIN/LOSE/DRAW -> REVENGE
     public string $status;
-    public string $ballsLocation;
+    public array $ballsLocation;
     private mysqli $conn;
+    public int $gameId;
 
     public function __construct(int $playerId = null)
     {
@@ -19,10 +26,11 @@ class Player
             $playerAssoc = $this->conn->query("SELECT * FROM players
                 WHERE player_id = $playerId")->fetch_assoc() or die($this->conn->error);
             $this->playerId = $playerId;
+            $this->gameId = $playerAssoc['game_id'];
             $this->opponentId = $playerAssoc['opponent_id'];
             $this->status = $playerAssoc['status'];
             $this->nickname = $playerAssoc['nickname'];
-            $this->ballsLocation = $playerAssoc['balls_location'];
+            $this->ballsLocation = json_decode($playerAssoc['balls_location']);
         }
     }
 
@@ -31,12 +39,12 @@ class Player
         $player = new self();
         $player->status = 'NONE';
         $player->nickname = 'NONE';
-        $player->ballsLocation = '[]';
+        $player->ballsLocation = [];
+        $jsonBallsLocation = json_encode($player->ballsLocation);
         $player->playerId = $player->conn->query("SHOW TABLE STATUS LIKE 'players'")->fetch_assoc()['Auto_increment'];
         $player->conn->query("INSERT INTO players (player_id, status, balls_location) VALUES
-            ($player->playerId ,'$player->status','$player->ballsLocation')") or die($player->conn->error);
+            ($player->playerId ,'$player->status','$jsonBallsLocation')") or die($player->conn->error);
         return $player;
-
     }
 
     public function setStatus($status): void
@@ -53,9 +61,10 @@ class Player
     }
 
 
-    public function setBallsLocation(string $ballsLocation): void
+    public function setBallsLocation(array $ballsLocation): void
     {
-        $this->conn->query("UPDATE players SET balls_location = '[$ballsLocation]' where player_id = $this->playerId") or die($this->conn->error);
+        $jsonBallsLocation = json_encode($ballsLocation);
+        $this->conn->query("UPDATE players SET balls_location = '$jsonBallsLocation' where player_id = $this->playerId") or die($this->conn->error);
         $this->ballsLocation = $ballsLocation;
     }
 
@@ -67,17 +76,12 @@ class Player
     public function setOpponentId($opponentId): void
     {
         $this->conn->query("UPDATE players SET opponent_id = '$opponentId' where player_id = $this->playerId") or die($this->conn->error);
-            $this->opponentId = $opponentId;
+        $this->opponentId = $opponentId;
     }
 
-    public function getUniqueGameId(): int
+    public function setGameId(int $gameId)
     {
-        $uniqueGameId = $this->conn->query("SELECT unique_game_id FROM games g JOIN players p 
-        on g.player_id = p.player_id WHERE p.player_id = $this->playerId or p.opponent_id = $this->playerId")->fetch_row()[0] or die($this->conn->error);
-
-
-        return $uniqueGameId;
-
+        $this->conn->query("UPDATE players SET game_id = '$gameId' where player_id = $this->playerId") or die($this->conn->error);
+        $this->gameId = $gameId;
     }
-
 }

@@ -1,16 +1,16 @@
-
-document.addEventListener('click',(e)=>{
-    if(e.target.classList.contains('btn-confirm'))
-    {
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-confirm')) {
         joinConfirm();
+    }
+    if (e.target.classList.contains('btn-revenge')) {
+        wantRevenge();
     }
 });
 
 
 function joinConfirm() {
-
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "php/game-confirm.php", true);
+    xhr.open("POST", "php/GameEvents/game-confirm.php", true);
     xhr.onload = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
@@ -24,7 +24,7 @@ function joinConfirm() {
 
 function wantRevenge() {
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "php/game-revenge.php", true);
+    xhr.open("POST", "php/GameEvents/game-revenge.php", true);
     xhr.onload = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
@@ -39,7 +39,7 @@ function wantRevenge() {
 function exitConfirm() {
     if (confirm("Czy chcesz opuścić grę?")) {
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "php/game-disconnect.php", true);
+        xhr.open("POST", "php/GameEvents/game-disconnect.php", true);
         xhr.onload = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {

@@ -1,20 +1,22 @@
-body{
+body {
     font-family: 'Rajdhani', sans-serif;
     background-color: violet;
     height: 90vh;
 }
-.hidden{
+
+.hidden {
     display: none;
 }
 
-.main-div, .main-div form{
+.main-div, .main-div form {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 
 }
-section{
+
+section {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,15 +24,18 @@ section{
     font-style: italic;
     height: 100%;
 }
-section h1{
+
+section h1 {
     font-size: 2.4em;
     width: 70%;
     text-align: center;
 }
-h2{
+
+h2 {
     text-align: center;
 }
-.btn-main,.btn-main:focus{
+
+.btn-main, .btn-main:focus {
     outline: 0;
     border-radius: 10px;
     background-color: #a610a6;
@@ -40,7 +45,7 @@ h2{
     font-weight: bolder;
 }
 
-.btn-main a{
+.btn-main a {
     text-decoration: none;
     color: black;
 }
@@ -55,15 +60,21 @@ h2{
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
-.game-id-div{
+
+.game-id-div {
     width: 250px;
     display: flex;
     justify-content: center;
 }
-.game-data-input{
+
+.game-data-input {
     height: 40px;
     width: 150px;
     border-radius: 25px;
@@ -72,30 +83,55 @@ h2{
     font-size: 1.5em;
     text-align: center;
 }
-.game-data-input:focus{
+
+.game-data-input:focus {
     outline: 2px solid #ffc6ff;
 }
 
-.error-text{
+.error-text {
     color: darkred;
     width: 150px;
     text-align: center;
 }
-.game-info-div{
+
+.game-info-div {
     border-radius: 25px;
     background-color: #d139d1;
     padding: 10px;
     font-weight: 500;
 }
+
 .board-table {
     border-spacing: 10px;
     border-radius: 20px;
+    background-color: #943094;
 }
 
-.board-table, .board-table td{
+.board-table, .board-table td {
     border: 3px solid #520152;
 }
+
 .board-table td {
     border-radius: 50px;
     padding: 30px;
+}
+
+.empty-ball {
+    background-color: violet;
+}
+
+.ball-hover {
+    background-color: #520152;
+}
+
+/*.empty-ball:hover{*/
+/*    background-color: #520152;*/
+/*}*/
+
+.player-ball {
+    background-color: #000000;
+}
+
+.opponent-ball {
+    background-color: #FFFFFF;
 }
