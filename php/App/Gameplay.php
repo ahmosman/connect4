@@ -5,9 +5,9 @@ require_once "Game.php";
 
 class Gameplay extends Game
 {
-    private int $width;
-    private int $height;
-    private array $board;
+    public int $width;
+    public int $height;
+    public array $board;
     public bool $isPlayersTurn;
 
 // przykład tablicy $board
@@ -27,60 +27,98 @@ class Gameplay extends Game
     public function __construct(int $playerId = null)
     {
         parent::__construct($playerId);
-//        var_dump('my id '.$this->player->playerId);
-//        var_dump('opponent id '.$this->opponent->playerId);
-//        var_dump($_SESSION);
         $this->width = explode('x', $this->boardSize)[0];
         $this->height = explode('x', $this->boardSize)[1];
         $this->isPlayersTurn = ($this->player->status === 'PLAYER_MOVE');
 //        generating board
         $this->board = $this->generateBoard();
-//        echo "<pre>";
-//        print_r($playerBalls);
-//        print_r($board);
-//        echo "</pre>";
     }
 
     //TODO: putBall, resultCheck (Piotrek)
     public function putBall(int $col)
     {
-        //wejście: nr kolumny $col
-        //wyjście: tablica $newBallsLocation, która jest tablicą $ballsLocation powiększoną o nową współrzędną
-
-        //szukamy nr następnego wiersza do którego zostanie wstawiona kulka
-        //[...]
-        //można sprawdzić lokację pola kolejnego pola np. w $this->board
-//        $newBallsLocation = [];
-//
-//        wysłanie $newBallsLocation do bazy i zaktualizowanie pola klasy (zobacz kod setBallsLocation)
-//        $this->player->setBallsLocation($newBallsLocation);
-
-//        zmiana stausów graczy:
-//        $this->player->setStatus('OPPONENT_MOVE');
-//        $this->opponent->setStatus('PLAYER_MOVE');
-
+      $board = $this->board;
+      $height = $this->height;
+      for($i = 0; $i < $height; $i++)
+        {
+          if($board[$i][$col] != 1 && $board[$i][$col] != 2)
+          {
+              $newBallsLocation = [$i, $col];
+              break;
+          }
+        }
+      $ballsLocation = $this->player->ballsLocation;
+      $ballsLocation[] = $newBallsLocation;
+      $this->player->setBallsLocation($ballsLocation);
+      $this->player->setStatus('OPPONENT_MOVE');
+      $this->opponent->setStatus('PLAYER_MOVE');
 //        sprawdzamy wynik po wykonanym ruchu
-//        resultCheck();
+      $this->resultCheck($newBallsLocation);
     }
 
-    private function resultCheck()
+    public function resultCheck(array $newBalls): void
     {
 //      generujemy na nowo zaktualizowaną tablicę przez putBall()
-//      $updatedBoard = $this->generateBoard();
-
-//      sprawdzamy czy gracz, który właśnie wykonał ruch wygrywa
-//        [...]
-//      jeśli wygrywa to:
-//      $this->player->setStatus('WIN');
-//      $this->opponent->setStatus('LOSE');
-
-//      jeśli remis to:
-//      $this->setPlayersStatus('DRAW');
-
-//
-//       wyczyść piłki przeciwników
-//       $this->resetPlayersBallsLocation();
-
+        $board = $this->generateBoard();
+        $x = $newBalls[0];
+        $y = $newBalls[1];
+        for($i = $x-3; $i <= $x; $i++)//wygrana pozioma
+        {
+          if($board[$i][$y] == 1 && $board[$i+1][$y] == 1 && $board[$i+2][$y] == 1 && $board[$i+3][$y] == 1)
+          {
+            $this->player->setStatus('WIN');
+            $this->opponent->setStatus('LOSE');
+            $this->resetPlayersBallsLocation();
+            return;
+          }
+        }
+        for($i = $y-3; $i <= $y; $i++)//wygrana pionowa
+        {
+          if($board[$x][$i] == 1 && $board[$x][$i+1] == 1 && $board[$x][$i+2] == 1 && $board[$x][$i+3] == 1)
+          {
+            $this->player->setStatus('WIN');
+            $this->opponent->setStatus('LOSE');
+            $this->resetPlayersBallsLocation();
+            return;
+          }
+        }
+        for($i = 0; $i <= 3; $i++)//wygrana na skos (y=-x)
+        {
+          if($board[$x-$i][$y+$i] == 1 && $board[$x-$i+1][$y+$i-1] == 1 && $board[$x-$i+2][$y+$i-2] == 1 && $board[$x-$i+3][$y-$i+3] == 1)
+          {
+            $this->player->setStatus('WIN');
+            $this->opponent->setStatus('LOSE');
+            $this->resetPlayersBallsLocation();
+            return;
+          }
+        }
+        for($i = 0; $i <= 3; $i++)//wygrana na skos (y=x)
+        {
+          if($board[$x-3+$i][$y-3+$i] == 1 && $board[$x-2+$i][$y-2+$i] == 1 && $board[$x-1+$i][$y-1+$i] == 1 && $board[$x+$i][$y+$i] == 1)
+          {
+            $this->player->setStatus('WIN');
+            $this->opponent->setStatus('LOSE');
+            $this->resetPlayersBallsLocation();
+            return;
+          }
+        }
+        $draw=0;//zmienna licząca ile jąder jest na planszy, jeżeli jądra wypełniły całą planszę to gra kończy się remisem
+        //gdyby ktoś nie rozumiał balls=jądra, i tak mam poczucie humoru jak 10 latek
+        for ($i=0; $i < $this->height; $i++) {
+          for ($j=0; $j < $this->width; $j++) {
+            if($board[$i][$j] == 1 || $board[$i][$j] == 2)
+            {
+              $draw++;
+            }
+          }
+        }
+        if($this->height * $this->width == $draw)
+        {
+          $this->player->setStatus('DRAW');
+          $this->opponent->setStatus('DRAW');
+          $this->resetPlayersBallsLocation();
+          return;
+        }
     }
 
     private function generateBoard(): array
