@@ -151,18 +151,6 @@ h2 {
     background-color: #520152;
 }
 
-/*.empty-ball:hover{*/
-/*    background-color: #520152;*/
-/*}*/
-
-.player-ball {
-    background-color: #000000;
-}
-
-.opponent-ball {
-    background-color: #FFFFFF;
-}
-
 .btn-div {
     display: flex;
     justify-content: space-between;
@@ -188,14 +176,65 @@ table.game-header {
 .game-header .player {
     text-align: left;
 }
-.game-header  td{
+
+.game-header td {
     /*width: 50%;*/
 }
 
 .game-header .opponent {
     text-align: right;
 }
-.game-header-wins{
+
+.game-header-wins {
     padding: 0 5px;
     font-size: 2.5rem;
+}
+
+.pick-color-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pick-color-div .color {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    border: 2px solid #c006c0;
+    border-radius: 10px;
+}
+
+.pick-color-div .color:not(.picked-player):not(.picked-opponent):hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.pick-color-div .color.picked-player, .pick-color-div .color.picked-opponent {
+    font-size: 4rem;
+    display: inline-block;
+    color: hsl(317, 100%, 54%);
+    border: hsl(317, 100%, 54%) 0.125em solid;
+    box-shadow: inset 0 0 0.5em 0 rgba(255, 255, 255, 0.46), 0 0 0.5em 0 hsl(317, 100%, 54%);
+
+}
+
+.color-blue {
+    background-color: blue;
+}
+
+.color-orange {
+    background-color: #ff8200;
+}
+
+.color-cyan {
+    background-color: cyan;
+}
+
+.color-magenta {
+    background-color: magenta;
+}
+
+.color-green {
+    background-color: springgreen;
 }

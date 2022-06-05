@@ -7,16 +7,18 @@ use mysqli;
 
 class Player
 {
-    private mysqli $conn;
     public int $playerId;
     public int $opponentId;
     public string $nickname;
     public array $ballsLocation;
     public int $gameId;
     public int $wins;
+    public string $playerColor;
+    public string $opponentColor;
+    public string $status;
 
 //kolejność statusów: NONE -> WAITING -> CONFIRMING -> READY -> PLAYER/OPPONENT_MOVE -> WIN/LOSE/DRAW -> REVENGE
-    public string $status;
+    private mysqli $conn;
 
     public function __construct(int $playerId = null)
     {
@@ -33,13 +35,9 @@ class Player
             $this->nickname = $playerAssoc['nickname'];
             $this->ballsLocation = json_decode($playerAssoc['balls_location']);
             $this->wins = $playerAssoc['wins'];
+            $this->playerColor = $playerAssoc['player_color'];
+            $this->opponentColor = $playerAssoc['opponent_color'];
         }
-    }
-
-    private function setWins(int $wins)
-    {
-        $this->conn->query("UPDATE players SET wins = '$wins' where player_id = $this->playerId") or die($this->conn->error);
-        $this->$wins = $wins;
     }
 
     public static function create()
@@ -57,12 +55,17 @@ class Player
 
     public function setStatus($status): void
     {
-        if($status === 'WIN')
+        if ($status === 'WIN')
             $this->setWins($this->wins + 1);
         $this->conn->query("UPDATE players SET status = '$status' where player_id = $this->playerId") or die($this->conn->error);
         $this->status = $status;
     }
 
+    private function setWins(int $wins)
+    {
+        $this->conn->query("UPDATE players SET wins = '$wins' where player_id = $this->playerId") or die($this->conn->error);
+        $this->$wins = $wins;
+    }
 
     public function setNickname($nickname): void
     {
@@ -89,9 +92,21 @@ class Player
         $this->opponentId = $opponentId;
     }
 
-    public function setGameId(int $gameId)
+    public function setGameId(int $gameId): void
     {
         $this->conn->query("UPDATE players SET game_id = '$gameId' where player_id = $this->playerId") or die($this->conn->error);
         $this->gameId = $gameId;
+    }
+
+    public function setPlayerColor(string $playerColor): void
+    {
+        $this->conn->query("UPDATE players SET player_color = '$playerColor' where player_id = $this->playerId") or die($this->conn->error);
+        $this->playerColor = $playerColor;
+    }
+
+    public function setOpponentColor(string $opponentColor): void
+    {
+        $this->conn->query("UPDATE players SET opponent_color = '$opponentColor' where player_id = $this->playerId") or die($this->conn->error);
+        $this->opponentColor = $opponentColor;
     }
 }

@@ -30,7 +30,7 @@ class Gameplay extends Game
         $this->width = explode('x', $this->boardSize)[0];
         $this->height = explode('x', $this->boardSize)[1];
         $this->isPlayersTurn = ($this->player->status === 'PLAYER_MOVE');
-//        generating board
+//      generowanie tablicy
         $this->board = $this->generateBoard();
     }
 
@@ -85,7 +85,6 @@ class Gameplay extends Game
                 if ($board[$i][$y] == 1 && $board[$i + 1][$y] == 1 && $board[$i + 2][$y] == 1 && $board[$i + 3][$y] == 1) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
-//            $this->resetPlayersBallsLocation();
                     return;
                 }
             }
@@ -96,7 +95,6 @@ class Gameplay extends Game
                 if ($board[$x][$i] == 1 && $board[$x][$i + 1] == 1 && $board[$x][$i + 2] == 1 && $board[$x][$i + 3] == 1) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
-//            $this->resetPlayersBallsLocation();
                     return;
                 }
             }
@@ -107,7 +105,6 @@ class Gameplay extends Game
                 if ($board[$x - $i][$y + $i] == 1 && $board[$x - $i + 1][$y + $i - 1] == 1 && $board[$x - $i + 2][$y + $i - 2] == 1 && $board[$x - $i + 3][$y - $i + 3] == 1) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
-//            $this->resetPlayersBallsLocation();
                     return;
                 }
             }
@@ -118,7 +115,6 @@ class Gameplay extends Game
                 if ($board[$x - 3 + $i][$y - 3 + $i] == 1 && $board[$x - 2 + $i][$y - 2 + $i] == 1 && $board[$x - 1 + $i][$y - 1 + $i] == 1 && $board[$x + $i][$y + $i] == 1) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
-//            $this->resetPlayersBallsLocation();
                     return;
                 }
             }
@@ -135,7 +131,6 @@ class Gameplay extends Game
         if ($this->height * $this->width == $draw) {
             $this->player->setStatus('DRAW');
             $this->opponent->setStatus('DRAW');
-//          $this->resetPlayersBallsLocation();
 
         }
     }
@@ -150,16 +145,15 @@ class Gameplay extends Game
 
     public function displayGameHeader(): string
     {
-
         return
             "<table class='game-header'>
                 <tr class='game-header-nicknames'>
-                    <td class='player'>".$this->player->nickname."</td>
-                    <td class='opponent'>".$this->opponent->nickname."</td>
+                    <td class='player'>" . $this->player->nickname . "</td>
+                    <td class='opponent'>" . $this->opponent->nickname . "</td>
                 </tr>
                 <tr class='game-header-wins'>
-                    <td class='player'>".$this->player->wins."</td>
-                    <td class='opponent'>".$this->opponent->wins."</td>
+                    <td class='player'>" . $this->player->wins . "</td>
+                    <td class='opponent'>" . $this->opponent->wins . "</td>
                 </tr>
             </table>
 ";
@@ -189,6 +183,21 @@ class Gameplay extends Game
             $boardHTML .= "</tr>";
         }
         $boardHTML .= "</table></div>";
+//        style tablicy z bazy danych
+        $boardHTML .= "<style>
+            .player-ball {
+                background-color:" . $this->player->playerColor . ";
+            }
+            .opponent-ball {
+                background-color: " . $this->player->opponentColor . ";
+            }                        
+            .game-header-wins .player{
+                color:" . $this->player->playerColor . ";
+            }                           
+            .game-header-wins .opponent{
+                color:" . $this->player->opponentColor . ";
+            }
+        </style>";
         return $boardHTML;
     }
 }
