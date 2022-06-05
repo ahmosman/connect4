@@ -1,22 +1,17 @@
 body {
     font-family: 'Rajdhani', sans-serif;
     background-color: violet;
-    height: 90vh;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 .hidden {
     display: none;
 }
 
-.main-div, .main-div form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-}
-
-section {
+main {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,9 +20,17 @@ section {
     height: 100%;
 }
 
-section h1 {
+main form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+main h1 {
     font-size: 2.4em;
-    width: 70%;
+    width: 100%;
     text-align: center;
 }
 
@@ -101,10 +104,22 @@ h2 {
     font-weight: 500;
 }
 
+.board {
+    display: flex;
+    margin: 20px;
+    max-width: 700px;
+    max-height: 700px;
+    /*width: 90vw;*/
+    /*height: 90vw;*/
+
+}
+
 .board-table {
-    border-spacing: 10px;
+    /*border-spacing: 7px;*/
     border-radius: 20px;
     background-color: #943094;
+    width: 100%;
+    height: 100%;
 }
 
 .board-table, .board-table td {
@@ -113,7 +128,7 @@ h2 {
 
 .board-table td {
     border-radius: 50px;
-    padding: 30px;
+    padding: 1em;
 }
 
 .empty-ball {
@@ -134,4 +149,14 @@ h2 {
 
 .opponent-ball {
     background-color: #FFFFFF;
+}
+
+.btn-div{
+    display: flex;
+    justify-content: space-between;
+    width: 90vw;
+    max-width: 700px;
+}
+.result-heading{
+    font-size: 2rem;
 }

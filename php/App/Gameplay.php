@@ -34,26 +34,43 @@ class Gameplay extends Game
         $this->board = $this->generateBoard();
     }
 
-    //TODO: putBall, resultCheck (Piotrek)
+    private function generateBoard(): array
+    {
+        $playerBalls = $this->player->ballsLocation;
+        $opponentBalls = $this->opponent->ballsLocation;
+        $board = [];
+        // ustawianie wszędzie zer
+        for ($h = 0; $h < $this->height; $h++) {
+            for ($w = 0; $w < $this->width; $w++)
+                $board[$h][$w] = 0;
+        }
+
+        foreach ($playerBalls as $pBall)
+            $board[$pBall[0]][$pBall[1]] = 1;
+
+        foreach ($opponentBalls as $oBall)
+            $board[$oBall[0]][$oBall[1]] = 2;
+        return $board;
+    }
+
     public function putBall(int $col)
     {
-      $board = $this->board;
-      $height = $this->height;
-      for($i = 0; $i < $height; $i++)
-        {
-          if($board[$i][$col] != 1 && $board[$i][$col] != 2)
-          {
-              $newBallsLocation = [$i, $col];
-              break;
-          }
+        $board = $this->board;
+        $height = $this->height;
+        $newBallsLocation = [];
+        for ($i = 0; $i < $height; $i++) {
+            if ($board[$i][$col] != 1 && $board[$i][$col] != 2) {
+                $newBallsLocation = [$i, $col];
+                break;
+            }
         }
-      $ballsLocation = $this->player->ballsLocation;
-      $ballsLocation[] = $newBallsLocation;
-      $this->player->setBallsLocation($ballsLocation);
-      $this->player->setStatus('OPPONENT_MOVE');
-      $this->opponent->setStatus('PLAYER_MOVE');
+        $ballsLocation = $this->player->ballsLocation;
+        $ballsLocation[] = $newBallsLocation;
+        $this->player->setBallsLocation($ballsLocation);
+        $this->player->setStatus('OPPONENT_MOVE');
+        $this->opponent->setStatus('PLAYER_MOVE');
 //        sprawdzamy wynik po wykonanym ruchu
-      $this->resultCheck($newBallsLocation);
+        $this->resultCheck($newBallsLocation);
     }
 
     public function resultCheck(array $newBalls): void
@@ -62,84 +79,86 @@ class Gameplay extends Game
         $board = $this->generateBoard();
         $x = $newBalls[0];
         $y = $newBalls[1];
-        for($i = $x-3; $i <= $x; $i++)//wygrana pozioma
+        for ($i = $x - 3; $i <= $x; $i++)//wygrana pozioma
         {
-          if($board[$i][$y] == 1 && $board[$i+1][$y] == 1 && $board[$i+2][$y] == 1 && $board[$i+3][$y] == 1)
-          {
-            $this->player->setStatus('WIN');
-            $this->opponent->setStatus('LOSE');
-            $this->resetPlayersBallsLocation();
-            return;
-          }
-        }
-        for($i = $y-3; $i <= $y; $i++)//wygrana pionowa
-        {
-          if($board[$x][$i] == 1 && $board[$x][$i+1] == 1 && $board[$x][$i+2] == 1 && $board[$x][$i+3] == 1)
-          {
-            $this->player->setStatus('WIN');
-            $this->opponent->setStatus('LOSE');
-            $this->resetPlayersBallsLocation();
-            return;
-          }
-        }
-        for($i = 0; $i <= 3; $i++)//wygrana na skos (y=-x)
-        {
-          if($board[$x-$i][$y+$i] == 1 && $board[$x-$i+1][$y+$i-1] == 1 && $board[$x-$i+2][$y+$i-2] == 1 && $board[$x-$i+3][$y-$i+3] == 1)
-          {
-            $this->player->setStatus('WIN');
-            $this->opponent->setStatus('LOSE');
-            $this->resetPlayersBallsLocation();
-            return;
-          }
-        }
-        for($i = 0; $i <= 3; $i++)//wygrana na skos (y=x)
-        {
-          if($board[$x-3+$i][$y-3+$i] == 1 && $board[$x-2+$i][$y-2+$i] == 1 && $board[$x-1+$i][$y-1+$i] == 1 && $board[$x+$i][$y+$i] == 1)
-          {
-            $this->player->setStatus('WIN');
-            $this->opponent->setStatus('LOSE');
-            $this->resetPlayersBallsLocation();
-            return;
-          }
-        }
-        $draw=0;//zmienna licząca ile jąder jest na planszy, jeżeli jądra wypełniły całą planszę to gra kończy się remisem
-        //gdyby ktoś nie rozumiał balls=jądra, i tak mam poczucie humoru jak 10 latek
-        for ($i=0; $i < $this->height; $i++) {
-          for ($j=0; $j < $this->width; $j++) {
-            if($board[$i][$j] == 1 || $board[$i][$j] == 2)
-            {
-              $draw++;
+            if ($this->areCellsSet($board, [[$i, $y], [$i + 1, $y], [$i + 2, $y], [$i + 3, $y]])) {
+                if ($board[$i][$y] == 1 && $board[$i + 1][$y] == 1 && $board[$i + 2][$y] == 1 && $board[$i + 3][$y] == 1) {
+                    $this->player->setStatus('WIN');
+                    $this->opponent->setStatus('LOSE');
+//            $this->resetPlayersBallsLocation();
+                    return;
+                }
             }
-          }
         }
-        if($this->height * $this->width == $draw)
+        for ($i = $y - 3; $i <= $y; $i++)//wygrana pionowa
         {
-          $this->player->setStatus('DRAW');
-          $this->opponent->setStatus('DRAW');
-          $this->resetPlayersBallsLocation();
-          return;
+            if ($this->areCellsSet($board, [[$x, $i], [$x, $i + 1], [$x, $i + 2], [$x, $i + 3]])) {
+                if ($board[$x][$i] == 1 && $board[$x][$i + 1] == 1 && $board[$x][$i + 2] == 1 && $board[$x][$i + 3] == 1) {
+                    $this->player->setStatus('WIN');
+                    $this->opponent->setStatus('LOSE');
+//            $this->resetPlayersBallsLocation();
+                    return;
+                }
+            }
+        }
+        for ($i = 0; $i <= 3; $i++)//wygrana na skos (y=-x)
+        {
+            if ($this->areCellsSet($board, [[$x - $i, $y + $i], [$x - $i + 1, $y + $i - 1], [$x - $i + 2, $y + $i - 2], [$x - $i + 3, $y - $i + 3]])) {
+                if ($board[$x - $i][$y + $i] == 1 && $board[$x - $i + 1][$y + $i - 1] == 1 && $board[$x - $i + 2][$y + $i - 2] == 1 && $board[$x - $i + 3][$y - $i + 3] == 1) {
+                    $this->player->setStatus('WIN');
+                    $this->opponent->setStatus('LOSE');
+//            $this->resetPlayersBallsLocation();
+                    return;
+                }
+            }
+        }
+        for ($i = 0; $i <= 3; $i++)//wygrana na skos (y=x)
+        {
+            if ($this->areCellsSet($board, [[$x - 3 + $i, $y - 3 + $i], [$x - 2 + $i,$y - 2 + $i], [$x - 1 + $i,$y - 1 + $i], [$x + $i,$y + $i]])) {
+                if ($board[$x - 3 + $i][$y - 3 + $i] == 1 && $board[$x - 2 + $i][$y - 2 + $i] == 1 && $board[$x - 1 + $i][$y - 1 + $i] == 1 && $board[$x + $i][$y + $i] == 1) {
+                    $this->player->setStatus('WIN');
+                    $this->opponent->setStatus('LOSE');
+//            $this->resetPlayersBallsLocation();
+                    return;
+                }
+            }
+        }
+        $draw = 0;//zmienna licząca ile piłek jest na planszy, jeżeli piłki wypełniły całą planszę to gra kończy się remisem
+
+        for ($i = 0; $i < $this->height; $i++) {
+            for ($j = 0; $j < $this->width; $j++) {
+                if ($board[$i][$j] == 1 || $board[$i][$j] == 2) {
+                    $draw++;
+                }
+            }
+        }
+        if ($this->height * $this->width == $draw) {
+            $this->player->setStatus('DRAW');
+            $this->opponent->setStatus('DRAW');
+//          $this->resetPlayersBallsLocation();
+
         }
     }
 
-    private function generateBoard(): array
+    private function areCellsSet(array $arr, array $cells): bool
     {
-        $playerBalls = $this->player->ballsLocation;
-        $opponentBalls = $this->opponent->ballsLocation;
-        $board = [];
-        for ($h = 0; $h < $this->height; $h++) {
-            for ($w = 0; $w < $this->width; $w++)
-                $board[$h][$w] = 0;
-        }
-        foreach ($playerBalls as $pBall)
-            $board[$pBall[0]][$pBall[1]] = 1;
-        foreach ($opponentBalls as $oBall)
-            $board[$oBall[0]][$oBall[1]] = 2;
-        return $board;
+        foreach ($cells as $cell)
+            if (!isset($arr[$cell[0]][$cell[1]]))
+                return false;
+        return true;
     }
 
-    private function displayBoard(): string
+    public function displayGameOutput(): string
     {
-        $boardHTML = "<table class='board-table'>";
+        $turn = $this->isPlayersTurn ? 'Twój ruch' : 'Ruch przeciwnika';
+        $output = "<h1>$turn</h1>";
+        $output .= $this->displayBoard();
+        return $output;
+    }
+
+    public function displayBoard(): string
+    {
+        $boardHTML = "<div class='board'><table class='board-table'>";
         for ($tr = $this->height - 1; $tr >= 0; $tr--) {
             $boardHTML .= "<tr data-row='$tr'>";
             for ($td = 0; $td < $this->width; $td++) {
@@ -152,15 +171,7 @@ class Gameplay extends Game
             }
             $boardHTML .= "</tr>";
         }
-        $boardHTML .= "</table>";
+        $boardHTML .= "</table></div>";
         return $boardHTML;
-    }
-
-    public function displayOutput(): string
-    {
-        $turn = $this->isPlayersTurn ? 'Twój ruch' : 'Ruch przeciwnika';
-        $output = "<h1>$turn</h1>";
-        $output .= $this->displayBoard();
-        return $output;
     }
 }

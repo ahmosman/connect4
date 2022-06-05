@@ -2,20 +2,18 @@
 //**************TESTING
 //session_start();
 // dla testowania konretnego gracza można przypisać poniżej jego id do zmiennej $_SESSION['player_id']
-//$_SESSION['player_id'] = 7;
+//$_SESSION['player_id'] = 21;
 //**************TESTING
 
 ?>
 
-    <section>
-        <div class="main-div">
-            <h1>Saper competitive</h1>
+    <main>
+            <h1>Connect4</h1>
             <form action="">
                 <input type="submit" class="btn-main new-game-btn" value="Nowa gra">
             </form>
             <input type="submit" class="btn-main join-game-btn" value="Dołącz do gry">
-        </div>
-    </section>
+    </main>
 
 <?php
 include_once "templates.html";

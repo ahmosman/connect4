@@ -11,7 +11,6 @@ if (isset($_SESSION['player_id'])) {
     $gameplay = new Gameplay($_SESSION['player_id']);
     $me = new Player($_SESSION['player_id']);
     $opponent = new Player($me->opponentId);
-
     if ($me->status == 'WAITING' && $opponent->status == 'WAITING') {
         $gameplay->setPlayersStatus('CONFIRMING');
     } elseif ($me->status == 'READY' && $opponent->status == 'READY') {
@@ -39,7 +38,7 @@ if (isset($_SESSION['player_id'])) {
             '<h2>Oczekiwanie na potwierdzenie przez przeciwnika</h2>
             <div class="loader"></div>';
     } elseif ($me->status == 'PLAYER_MOVE' || $me->status == 'OPPONENT_MOVE') {
-        $output .= $gameplay->displayOutput();
+        $output .= $gameplay->displayGameOutput();
     } elseif ($me->status == 'REVENGE') {
         $output .=
             '<h2>Oczekiwanie na potwierdzenie rewanżu</h2>
@@ -50,19 +49,24 @@ if (isset($_SESSION['player_id'])) {
             '<h2>Przeciwnik rozłączył się</h2>'
             . include '../templates/backBtn.php';
     } elseif ($me->status == 'WIN' || $me->status == 'LOSE') {
+        $output .= '<h1 class="result-heading">';
         $output .= match ($me->status) {
-            'WIN' => '<h2>WYGRAłEś</h2>',
-            'LOSE' => '<h2>PRZEGRAłEś</h2>',
+            'WIN' => 'WYGRAłEŚ',
+            'LOSE' => 'PRZEGRAłEŚ',
         };
+        $output .= '</h1>';
         if ($opponent->status == 'REVENGE') {
             $output .=
                 '<div class="game-info-div">Przeciwnik chce rewanżu!</div>';
         }
+        $output .= $gameplay->displayBoard();
+        $output .= '<div class="btn-div">';
         $output .= include '../templates/backBtn.php';
         $output .= include '../templates/revengeBtn.php';
+        $output .= '</div>';
     }
 
     echo $output;
 }
 
-//TODO: Dodaj i wyświetlaj licznik wygranych gier
+//TODO: Dodaj i wyświetlaj licznik wygranych gier i nicki nad tablicą

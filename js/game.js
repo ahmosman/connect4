@@ -1,5 +1,5 @@
 let forms = document.querySelectorAll("form");
-let mainDiv = document.querySelector(".main-div");
+let main = document.querySelector("main");
 const templates = {
     joinGame: document.querySelector(".join-game-temp"),
     enterNick: document.querySelector(".enter-nick-temp")
@@ -30,11 +30,11 @@ document.addEventListener('click', (e) => {
         }
         xhr.send();
     } else if (e.target.classList.contains('join-game-btn')) {
-        mainDiv.innerHTML = templates.joinGame.innerHTML;
+        main.innerHTML = templates.joinGame.innerHTML;
 
-        let joinIdBtn = mainDiv.querySelector(".join-id-btn");
-        let joinForm = mainDiv.querySelector("form");
-        let errorText = mainDiv.querySelector(".error-text");
+        let joinIdBtn = main.querySelector(".join-id-btn");
+        let joinForm = main.querySelector("form");
+        let errorText = main.querySelector(".error-text");
         preventDefault(joinForm);
         joinIdBtn.addEventListener('click', () => {
             let xhr = new XMLHttpRequest();
@@ -66,10 +66,10 @@ function preventDefault(form) {
 }
 
 function enterNick() {
-    mainDiv.innerHTML = templates.enterNick.innerHTML;
-    let form = mainDiv.querySelector("form");
+    main.innerHTML = templates.enterNick.innerHTML;
+    let form = main.querySelector("form");
     let btn = form.querySelector("input[type=submit]");
-    let errorText = mainDiv.querySelector(".error-text");
+    let errorText = main.querySelector(".error-text");
     preventDefault(form);
     btn.addEventListener('click', () => {
         let xhr = new XMLHttpRequest();
@@ -78,7 +78,7 @@ function enterNick() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     if (xhr.response === "success") {
-                        gameStart();
+                        gameLoop();
                     } else {
                         errorText.innerHTML = xhr.response;
                     }
@@ -91,20 +91,40 @@ function enterNick() {
     });
 }
 
+function dynamicStyles()
+{
+    let board = document.querySelector(".board")
+    let side;
+    console.log(window.screen.width );
+    console.log(window.screen.height );
+
+    if(window.screen.width < window.screen.height)
+    {
+        side = window.screen.width*0.9;
+    }else{
+        side = window.screen.height*0.8;
+    }
+    if(board) {
+        board.style.height = `${side}px`;
+        board.style.width = `${side}px`;
+    }
+}
+
 function updateMainDiv() {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", "php/GameEvents/game-content.php", true);
     xhr.onload = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                mainDiv.innerHTML = xhr.response;
+                main.innerHTML = xhr.response;
+                dynamicStyles();
             }
         }
     }
     xhr.send();
 }
 
-function gameStart() {
+function gameLoop() {
     const loop = setInterval(() => {
         // gdy zmieni się status gracza zostanie uruchomiona funkcja updateManDiv
         let xhr = new XMLHttpRequest();
@@ -139,7 +159,6 @@ function putBall(ball) {
     xhr.onload = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log(xhr.response);
                 // if(xhr.response === 'success')
                 //     console.log('put ok');
                 // else

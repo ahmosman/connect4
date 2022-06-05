@@ -1,5 +1,7 @@
 document.addEventListener('mouseover', (e) => {
 
+    if(document.querySelector(".result-heading"))
+        return;
     if (e.target.classList.contains('empty-ball')) {
         let emptyBalls = document.querySelectorAll('.empty-ball');
         let column = e.target.dataset.col;

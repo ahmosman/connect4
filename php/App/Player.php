@@ -7,15 +7,16 @@ use mysqli;
 
 class Player
 {
+    private mysqli $conn;
     public int $playerId;
     public int $opponentId;
     public string $nickname;
+    public array $ballsLocation;
+    public int $gameId;
+    public int $wins;
 
 //kolejność statusów: NONE -> WAITING -> CONFIRMING -> READY -> PLAYER/OPPONENT_MOVE -> WIN/LOSE/DRAW -> REVENGE
     public string $status;
-    public array $ballsLocation;
-    private mysqli $conn;
-    public int $gameId;
 
     public function __construct(int $playerId = null)
     {
@@ -31,7 +32,14 @@ class Player
             $this->status = $playerAssoc['status'];
             $this->nickname = $playerAssoc['nickname'];
             $this->ballsLocation = json_decode($playerAssoc['balls_location']);
+            $this->wins = $playerAssoc['wins'];
         }
+    }
+
+    private function setWins(int $wins)
+    {
+        $this->conn->query("UPDATE players SET wins = '$wins' where player_id = $this->playerId") or die($this->conn->error);
+        $this->$wins = $wins;
     }
 
     public static function create()
@@ -49,6 +57,8 @@ class Player
 
     public function setStatus($status): void
     {
+        if($status === 'WIN')
+            $this->setWins($this->wins + 1);
         $this->conn->query("UPDATE players SET status = '$status' where player_id = $this->playerId") or die($this->conn->error);
         $this->status = $status;
     }

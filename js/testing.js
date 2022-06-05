@@ -7,7 +7,7 @@ testPlayerBtn.addEventListener('click', () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 if (xhr.response === 'success')
-                    gameStart();
+                    gameLoop();
                 else {
                     console.log(xhr.response);
                 }
