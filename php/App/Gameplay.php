@@ -114,7 +114,7 @@ class Gameplay extends Game
         }
         for ($i = 0; $i <= 3; $i++)//wygrana na skos (y=x)
         {
-            if ($this->areCellsSet($board, [[$x - 3 + $i, $y - 3 + $i], [$x - 2 + $i,$y - 2 + $i], [$x - 1 + $i,$y - 1 + $i], [$x + $i,$y + $i]])) {
+            if ($this->areCellsSet($board, [[$x - 3 + $i, $y - 3 + $i], [$x - 2 + $i, $y - 2 + $i], [$x - 1 + $i, $y - 1 + $i], [$x + $i, $y + $i]])) {
                 if ($board[$x - 3 + $i][$y - 3 + $i] == 1 && $board[$x - 2 + $i][$y - 2 + $i] == 1 && $board[$x - 1 + $i][$y - 1 + $i] == 1 && $board[$x + $i][$y + $i] == 1) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
@@ -146,6 +146,23 @@ class Gameplay extends Game
             if (!isset($arr[$cell[0]][$cell[1]]))
                 return false;
         return true;
+    }
+
+    public function displayGameHeader(): string
+    {
+
+        return
+            "<table class='game-header'>
+                <tr class='game-header-nicknames'>
+                    <td class='player'>".$this->player->nickname."</td>
+                    <td class='opponent'>".$this->opponent->nickname."</td>
+                </tr>
+                <tr class='game-header-wins'>
+                    <td class='player'>".$this->player->wins."</td>
+                    <td class='opponent'>".$this->opponent->wins."</td>
+                </tr>
+            </table>
+";
     }
 
     public function displayGameOutput(): string

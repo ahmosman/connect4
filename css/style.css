@@ -16,11 +16,23 @@ main {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-style: italic;
     height: 100%;
+    width: 100%;
 }
 
-main form {
+.main-section {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-style: italic;
+    height: 100%;
+    width: 100%;
+    max-width: 700px;
+}
+
+.main-section form {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,7 +40,7 @@ main form {
 
 }
 
-main h1 {
+.main-section h1 {
     font-size: 2.4em;
     width: 100%;
     text-align: center;
@@ -151,12 +163,39 @@ h2 {
     background-color: #FFFFFF;
 }
 
-.btn-div{
+.btn-div {
     display: flex;
     justify-content: space-between;
     width: 90vw;
     max-width: 700px;
 }
-.result-heading{
+
+.result-heading {
     font-size: 2rem;
+}
+
+table.game-header {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    width: 90%;
+    padding: 20px;
+    font-size: 2rem;
+    font-weight: 900;
+    border-spacing: 5px;
+}
+
+.game-header .player {
+    text-align: left;
+}
+.game-header  td{
+    /*width: 50%;*/
+}
+
+.game-header .opponent {
+    text-align: right;
+}
+.game-header-wins{
+    padding: 0 5px;
+    font-size: 2.5rem;
 }

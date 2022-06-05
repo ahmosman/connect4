@@ -45,6 +45,7 @@ function exitConfirm() {
                 if (xhr.status === 200) {
                     if (!(xhr.response === "success"))
                         console.log(xhr.response);
+                    window.location.href = './index.php';
                 }
             }
         }

@@ -1,5 +1,5 @@
 let forms = document.querySelectorAll("form");
-let main = document.querySelector("main");
+let main = document.querySelector(".main-section");
 const templates = {
     joinGame: document.querySelector(".join-game-temp"),
     enterNick: document.querySelector(".enter-nick-temp")
@@ -95,8 +95,6 @@ function dynamicStyles()
 {
     let board = document.querySelector(".board")
     let side;
-    console.log(window.screen.width );
-    console.log(window.screen.height );
 
     if(window.screen.width < window.screen.height)
     {
@@ -134,9 +132,12 @@ function gameLoop() {
                 if (xhr.status === 200) {
 
                     let newStatus = JSON.parse(xhr.response);
+
                     if (newStatus.player !== playerStatus || newStatus.opponent !== opponentStatus) {
                         playerStatus = newStatus.player;
                         opponentStatus = newStatus.opponent;
+                        console.log(playerStatus);
+                        console.log(opponentStatus);
                         updateMainDiv();
                     }
 

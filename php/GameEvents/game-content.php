@@ -8,6 +8,7 @@ session_start();
 
 if (isset($_SESSION['player_id'])) {
     $output = "";
+    $btnOutput = include '../templates/backBtn.php';
     $gameplay = new Gameplay($_SESSION['player_id']);
     $me = new Player($_SESSION['player_id']);
     $opponent = new Player($me->opponentId);
@@ -21,8 +22,13 @@ if (isset($_SESSION['player_id'])) {
         $gameplay->setPlayersStatus('CONFIRMING');
         $gameplay->resetPlayersBallsLocation();
     }
-
-    if ($me->status == 'WAITING') {
+    if(in_array($me->status,['WIN','LOSE','PLAYER_MOVE','OPPONENT_MOVE'])){
+        $output .= $gameplay->displayGameHeader();
+    }
+    if ($opponent->status == 'DISCONNECTED') {
+        $output .=
+            '<h2>Przeciwnik rozłączył się</h2>';
+    } elseif ($me->status == 'WAITING') {
         $output .=
             '<div class="game-id-div"><h1>Twoja gra: <span>' . $gameplay->getUniqueGameId() . '</span></h1></div>
             <h2>Oczekiwanie na przeciwnika</h2>
@@ -31,8 +37,7 @@ if (isset($_SESSION['player_id'])) {
         $output .=
             "<h2>$opponent->nickname czeka na Ciebie!</h2>
              <h2>Gotowy?</h2>";
-        $output .= include '../templates/confirmBtn.php';
-        $output .= include '../templates/backBtn.php';
+        $btnOutput .= include '../templates/confirmBtn.php';
     } elseif ($me->status == 'READY') {
         $output .=
             '<h2>Oczekiwanie na potwierdzenie przez przeciwnika</h2>
@@ -43,11 +48,6 @@ if (isset($_SESSION['player_id'])) {
         $output .=
             '<h2>Oczekiwanie na potwierdzenie rewanżu</h2>
             <div class="loader"></div>';
-        $output .= include '../templates/backBtn.php';
-    } elseif ($opponent->status == 'DISCONNECTED') {
-        $output .=
-            '<h2>Przeciwnik rozłączył się</h2>'
-            . include '../templates/backBtn.php';
     } elseif ($me->status == 'WIN' || $me->status == 'LOSE') {
         $output .= '<h1 class="result-heading">';
         $output .= match ($me->status) {
@@ -60,12 +60,9 @@ if (isset($_SESSION['player_id'])) {
                 '<div class="game-info-div">Przeciwnik chce rewanżu!</div>';
         }
         $output .= $gameplay->displayBoard();
-        $output .= '<div class="btn-div">';
-        $output .= include '../templates/backBtn.php';
-        $output .= include '../templates/revengeBtn.php';
-        $output .= '</div>';
+        $btnOutput .= include '../templates/revengeBtn.php';
     }
-
+    $output .= "<div class='btn-div'>$btnOutput</div>";
     echo $output;
 }
 
