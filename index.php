@@ -1,7 +1,7 @@
 <?php include_once "header.php";
 //**************TESTING
 //session_start();
-// dla testowania konretnego gracza można przypisać poniżej jego id do zmiennej $_SESSION['player_id']
+// dla testowania konkretnego gracza można przypisać poniżej jego id do zmiennej $_SESSION['player_id']
 //$_SESSION['player_id'] = 21;
 //**************TESTING
 

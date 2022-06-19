@@ -22,7 +22,7 @@ class Gameplay extends Game
 //  0 - puste pole
 //  1 - gracz (me)
 //  2 - przeciwnik
-// $ballsLocation - współrzędne - przykład dla przeciwnika powyżej: [[0,1],[0,3],[1,2],[2,0],[2,3]]
+// $ballsLocation - współrzędne — przykład dla przeciwnika powyżej: [[0,1],[0,3],[1,2],[2,0],[2,3]]
 
     public function __construct(int $playerId = null)
     {
@@ -75,11 +75,11 @@ class Gameplay extends Game
 
     public function resultCheck(array $newBalls): void
     {
-//      generujemy na nowo zaktualizowaną tablicę przez putBall()
+//      generujemy na nowo zaktualizowaną tablicę przez putBall
         $board = $this->generateBoard();
         $x = $newBalls[0];
         $y = $newBalls[1];
-        for ($i = $x - 3; $i <= $x; $i++)//wygrana pozioma
+        for ($i = $x - 3; $i <= $x; $i++)//wygrana pionowa
         {
             if ($this->areCellsSet($board, [[$i, $y], [$i + 1, $y], [$i + 2, $y], [$i + 3, $y]])) {
                 if ($board[$i][$y] == 1 && $board[$i + 1][$y] == 1 && $board[$i + 2][$y] == 1 && $board[$i + 3][$y] == 1) {
@@ -89,7 +89,7 @@ class Gameplay extends Game
                 }
             }
         }
-        for ($i = $y - 3; $i <= $y; $i++)//wygrana pionowa
+        for ($i = $y - 3; $i <= $y; $i++)//wygrana pozioma
         {
             if ($this->areCellsSet($board, [[$x, $i], [$x, $i + 1], [$x, $i + 2], [$x, $i + 3]])) {
                 if ($board[$x][$i] == 1 && $board[$x][$i + 1] == 1 && $board[$x][$i + 2] == 1 && $board[$x][$i + 3] == 1) {
@@ -101,8 +101,8 @@ class Gameplay extends Game
         }
         for ($i = 0; $i <= 3; $i++)//wygrana na skos (y=-x)
         {
-            if ($this->areCellsSet($board, [[$x - $i, $y + $i], [$x - $i + 1, $y + $i - 1], [$x - $i + 2, $y + $i - 2], [$x - $i + 3, $y - $i + 3]])) {
-                if ($board[$x - $i][$y + $i] == 1 && $board[$x - $i + 1][$y + $i - 1] == 1 && $board[$x - $i + 2][$y + $i - 2] == 1 && $board[$x - $i + 3][$y - $i + 3] == 1) {
+            if ($this->areCellsSet($board, [[$x - $i, $y + $i], [$x - $i + 1, $y + $i - 1], [$x - $i + 2, $y + $i - 2], [$x - $i + 3, $y - $i - 3]])) {
+                if ($board[$x - $i][$y + $i] == 1 && $board[$x - $i + 1][$y + $i - 1] == 1 && $board[$x - $i + 2][$y + $i - 2] == 1 && $board[$x - $i + 3][$y - $i - 3] == 1) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
@@ -131,7 +131,6 @@ class Gameplay extends Game
         if ($this->height * $this->width == $draw) {
             $this->player->setStatus('DRAW');
             $this->opponent->setStatus('DRAW');
-
         }
     }
 

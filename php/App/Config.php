@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use mysqli;
 
 class Config
@@ -18,10 +19,17 @@ class Config
         $this->username = "root";
         $this->password = "";
         $this->db = "connect4";
-        $this->conn = new mysqli($this->hostname, $this->username, $this->password, $this->db);
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        try {
+            $this->conn = new mysqli($this->hostname, $this->username, $this->password, $this->db);
+            $this->conn->set_charset("utf8mb4");
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            exit('Wystąpił błąd');
+        }
     }
 
-    public function getConn()
+    public function getConn(): mysqli
     {
         return $this->conn;
     }
