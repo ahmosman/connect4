@@ -55,12 +55,14 @@ class Player
         $player->status = 'NONE';
         $player->nickname = 'NONE';
         $player->ballsLocation = [];
+        $player->playerColor = '#ffffff';
+        $player->opponentColor = '#000000';
         $jsonBallsLocation = json_encode($player->ballsLocation);
         try {
             $player->playerId = $player->conn->query("SHOW TABLE STATUS LIKE 'players'")->fetch_assoc()['Auto_increment'];
-            $stmt = $player->conn->prepare("INSERT INTO players (player_id, status, balls_location) VALUES
-            (?,?,?)");
-            $stmt->bind_param("iss", $player->playerId, $player->status, $jsonBallsLocation);
+            $stmt = $player->conn->prepare("INSERT INTO players (player_id, status, balls_location, player_color, opponent_color) VALUES
+            (?,?,?,?,?)");
+            $stmt->bind_param("issss", $player->playerId, $player->status, $jsonBallsLocation, $player->playerColor, $player->opponentColor);
             $stmt->execute();
         } catch (Exception $e) {
             error_log($e->getMessage());

@@ -159,9 +159,11 @@ function gameLoop() {
 
     }, 500);
     let stopIntervalBtn = document.querySelector('.stop-interval-btn');
-    stopIntervalBtn.addEventListener('click', () => {
-        clearInterval(loop);
-    });
+    if(stopIntervalBtn) {
+        stopIntervalBtn.addEventListener('click', () => {
+            clearInterval(loop);
+        });
+    }
 }
 
 function putBall(ball) {
