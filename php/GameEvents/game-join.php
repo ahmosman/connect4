@@ -1,9 +1,8 @@
 <?php
-
+session_start();
 use App\Game;
 
 include_once "../App/Game.php";
-session_start();
 if (!empty($_POST['unique_game_id'])) {
     $uniqueGameId = $_POST['unique_game_id'];
     $result = Game::join($uniqueGameId);

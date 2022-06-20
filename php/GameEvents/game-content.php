@@ -1,10 +1,10 @@
 <?php
+session_start();
+
 include_once "../App/Gameplay.php";
 include_once "../App/Player.php";
 
 use App\{Gameplay, Player};
-
-session_start();
 
 if (isset($_SESSION['player_id'])) {
     $output = "";
@@ -22,7 +22,7 @@ if (isset($_SESSION['player_id'])) {
         $gameplay->setPlayersStatus('CONFIRMING');
         $gameplay->resetPlayersBallsLocation();
     }
-    if(in_array($me->status,['WIN','LOSE','PLAYER_MOVE','OPPONENT_MOVE'])){
+    if (in_array($me->status, ['WIN', 'LOSE', 'PLAYER_MOVE', 'OPPONENT_MOVE'])) {
         $output .= $gameplay->displayGameHeader();
     }
     if ($opponent->status == 'DISCONNECTED') {

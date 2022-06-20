@@ -1,10 +1,11 @@
 <?php
+session_start();
 
 use App\{Player, Game};
 
 include_once "../App/Game.php";
 include_once "../App/Player.php";
-session_start();
+
 $output = "";
 
 $player = Player::create();

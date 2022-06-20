@@ -1,9 +1,10 @@
 <?php
+session_start();
 
 use App\Player;
 
 include_once "../App/Player.php";
-session_start();
+
 $output = "";
 if (!empty($_POST['nickname'])) {
     if ($_POST['player_color'] !== $_POST['opponent_color']) {
