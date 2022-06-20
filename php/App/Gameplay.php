@@ -101,8 +101,8 @@ class Gameplay extends Game
         }
         for ($i = 0; $i <= 3; $i++)//wygrana na skos (y=-x)
         {
-            if ($this->areCellsSet($board, [[$x - $i, $y + $i], [$x - $i + 1, $y + $i - 1], [$x - $i + 2, $y + $i - 2], [$x - $i + 3, $y - $i - 3]])) {
-                if ($board[$x - $i][$y + $i] == 1 && $board[$x - $i + 1][$y + $i - 1] == 1 && $board[$x - $i + 2][$y + $i - 2] == 1 && $board[$x - $i + 3][$y - $i - 3] == 1) {
+            if ($this->areCellsSet($board, [[$x - $i, $y + $i], [$x - $i + 1, $y + $i - 1], [$x - $i + 2, $y + $i - 2], [$x - $i + 3, $y + $i - 3]])) {
+                if ($board[$x - $i][$y + $i] == 1 && $board[$x - $i + 1][$y + $i - 1] == 1 && $board[$x - $i + 2][$y + $i - 2] == 1 && $board[$x - $i + 3][$y + $i - 3] == 1) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
@@ -144,8 +144,8 @@ class Gameplay extends Game
 
     public function displayGameHeader(): string
     {
-            //        style tablicy z bazy danych
-            return "<style>
+        //        style tablicy z bazy danych
+        return "<style>
             .player-ball {
                 background-color:" . $this->player->playerColor . ";
             }
