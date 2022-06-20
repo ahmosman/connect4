@@ -15,12 +15,18 @@ class Config
 
     public function __construct()
     {
-        $this->hostname = "localhost";
-        $this->username = "root";
-        $this->password = "";
-        $this->db = "connect4";
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         try {
+            if ($_SESSION['env'] == 'prod') {
+                $this->hostname = get_cfg_var("db.hostname");
+                $this->username = get_cfg_var("db.username");
+                $this->password = get_cfg_var("db.password");
+            } else {
+                $this->hostname = "localhost";
+                $this->username = "root";
+                $this->password = "";
+            }
+            $this->db = "connect4";
             $this->conn = new mysqli($this->hostname, $this->username, $this->password, $this->db);
             $this->conn->set_charset("utf8mb4");
         } catch (Exception $e) {

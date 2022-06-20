@@ -14,6 +14,8 @@ for (const form of forms) {
 // ********* TESTING
 
 document.addEventListener('click', (e) => {
+    if (document.querySelector(".result-heading"))
+        return;
     if (e.target.classList.contains('new-game-btn')) {
         let xhr = new XMLHttpRequest();
         xhr.open("POST", "php/GameEvents/game-start.php", true);

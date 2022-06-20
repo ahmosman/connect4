@@ -1,3 +1,6 @@
+<?php
+if($_SESSION['env'] == 'dev'){
+?>
 <footer>
     Testuj gracza
     <form action="">
@@ -6,8 +9,13 @@
         <button type="button" class="stop-interval-btn">stop interval</button>
     </form>
 </footer>
-<script src="js/game.js"></script>
 <script src="js/testing.js"></script>
+<?php
+}
+?>
+
+<script src="js/game.js"></script>
+
 <script src="js/dynamicEvents.js"></script>
 <script src="js/gameStyles.js"></script>
 </body>

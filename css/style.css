@@ -42,7 +42,7 @@ main {
 
 .main-section h1 {
     font-size: 2.4em;
-    width: 100%;
+    max-width: 60vw;
     text-align: center;
 }
 
@@ -101,6 +101,10 @@ h2 {
 
 .game-data-input:focus {
     outline: 2px solid #ffc6ff;
+}
+
+.game-data-input::placeholder {
+    font-size: 0.75em;
 }
 
 .error-text {
@@ -171,6 +175,7 @@ table.game-header {
     font-size: 2rem;
     font-weight: 900;
     border-spacing: 5px;
+    table-layout: fixed;
 }
 
 .game-header .player {
@@ -185,9 +190,17 @@ table.game-header {
     text-align: right;
 }
 
+.game-header-nicknames > td {
+    text-overflow: ellipsis;
+    max-width: 35vw;
+    overflow: hidden;
+    padding: 0 5px;
+}
+
 .game-header-wins {
     padding: 0 5px;
     font-size: 2.5rem;
+    text-shadow: -1px 0 black, 0 2px black, 2px 0 black, 0 -1px black;
 }
 
 .pick-color-div {
@@ -237,4 +250,10 @@ table.game-header {
 
 .color-green {
     background-color: springgreen;
+}
+
+@media screen and (max-width: 530px){
+    .main-section h1{
+        font-size: 1.8em;
+    }
 }

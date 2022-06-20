@@ -1,10 +1,13 @@
 <?php include_once "header.php";
+
+session_start();
+
+$_SESSION['env'] = 'prod';
 //**************TESTING
 //session_start();
 // dla testowania konkretnego gracza można przypisać poniżej jego id do zmiennej $_SESSION['player_id']
 //$_SESSION['player_id'] = 21;
 //**************TESTING
-
 ?>
 
     <main>

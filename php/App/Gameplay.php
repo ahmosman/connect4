@@ -144,8 +144,22 @@ class Gameplay extends Game
 
     public function displayGameHeader(): string
     {
-        return
-            "<table class='game-header'>
+            //        style tablicy z bazy danych
+            return "<style>
+            .player-ball {
+                background-color:" . $this->player->playerColor . ";
+            }
+            .opponent-ball {
+                background-color: " . $this->player->opponentColor . ";
+            }                        
+            .game-header-wins .player{
+                color:" . $this->player->playerColor . ";
+            }                           
+            .game-header-wins .opponent{
+                color:" . $this->player->opponentColor . ";
+            }
+        </style>
+        <table class='game-header'>
                 <tr class='game-header-nicknames'>
                     <td class='player'>" . $this->player->nickname . "</td>
                     <td class='opponent'>" . $this->opponent->nickname . "</td>
@@ -154,7 +168,7 @@ class Gameplay extends Game
                     <td class='player'>" . $this->player->wins . "</td>
                     <td class='opponent'>" . $this->opponent->wins . "</td>
                 </tr>
-            </table>
+        </table>
 ";
     }
 
@@ -182,21 +196,6 @@ class Gameplay extends Game
             $boardHTML .= "</tr>";
         }
         $boardHTML .= "</table></div>";
-//        style tablicy z bazy danych
-        $boardHTML .= "<style>
-            .player-ball {
-                background-color:" . $this->player->playerColor . ";
-            }
-            .opponent-ball {
-                background-color: " . $this->player->opponentColor . ";
-            }                        
-            .game-header-wins .player{
-                color:" . $this->player->playerColor . ";
-            }                           
-            .game-header-wins .opponent{
-                color:" . $this->player->opponentColor . ";
-            }
-        </style>";
         return $boardHTML;
     }
 }
