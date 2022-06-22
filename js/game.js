@@ -2,7 +2,8 @@ let forms = document.querySelectorAll("form");
 let main = document.querySelector(".main-section");
 const templates = {
     joinGame: document.querySelector(".join-game-temp"),
-    playerSetup: document.querySelector(".player-setup-temp")
+    playerSetup: document.querySelector(".player-setup-temp"),
+    manual: document.querySelector(".manual-temp")
 }
 let playerStatus = null;
 let opponentStatus = null;
@@ -56,6 +57,8 @@ document.addEventListener('click', (e) => {
             xhr.send(formData);
         });
 
+    } else if (e.target.classList.contains('manual-btn')) {
+        main.innerHTML = templates.manual.innerHTML;
     } else if (e.target.classList.contains('empty-ball')) {
         putBall(e.target);
     }
@@ -104,18 +107,16 @@ function playerSetup() {
     });
 }
 
-function dynamicStyles()
-{
+function dynamicStyles() {
     let board = document.querySelector(".board")
     let side;
 
-    if(window.screen.width < window.screen.height)
-    {
-        side = window.screen.width*0.9;
-    }else{
-        side = window.screen.height*0.8;
+    if (window.screen.width < window.screen.height) {
+        side = window.screen.width * 0.9;
+    } else {
+        side = window.screen.height * 0.8;
     }
-    if(board) {
+    if (board) {
         board.style.height = `${side}px`;
         board.style.width = `${side}px`;
     }
@@ -159,7 +160,7 @@ function gameLoop() {
 
     }, 500);
     let stopIntervalBtn = document.querySelector('.stop-interval-btn');
-    if(stopIntervalBtn) {
+    if (stopIntervalBtn) {
         stopIntervalBtn.addEventListener('click', () => {
             clearInterval(loop);
         });

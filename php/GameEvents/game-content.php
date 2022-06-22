@@ -15,9 +15,17 @@ if (isset($_SESSION['player_id'])) {
     if ($me->status == 'WAITING' && $opponent->status == 'WAITING') {
         $gameplay->setPlayersStatus('CONFIRMING');
     } elseif ($me->status == 'READY' && $opponent->status == 'READY') {
-//        TODO: loswanie ruchu (statusów)
-        $me->setStatus('PLAYER_MOVE');
-        $opponent->setStatus('OPPONENT_MOVE');
+//        losowanie ruchu tylko po stronie gracza, który stworzył grę
+        if ($me->playerId < $opponent->playerId) {
+            $_SESSION['turn'] = mt_rand(0,1);
+            if ($_SESSION['turn']) {
+                $me->setStatus('PLAYER_MOVE');
+                $opponent->setStatus('OPPONENT_MOVE');
+            } else {
+                $me->setStatus('OPPONENT_MOVE');
+                $opponent->setStatus('PLAYER_MOVE');
+            }
+        }
     } elseif ($me->status == 'REVENGE' && $opponent->status == 'REVENGE') {
         $gameplay->setPlayersStatus('CONFIRMING');
         $gameplay->resetPlayersBallsLocation();
@@ -51,8 +59,8 @@ if (isset($_SESSION['player_id'])) {
     } elseif ($me->status == 'WIN' || $me->status == 'LOSE') {
         $output .= '<h1 class="result-heading">';
         $output .= match ($me->status) {
-            'WIN' => 'WYGRAłEŚ',
-            'LOSE' => 'PRZEGRAłEŚ',
+            'WIN' => 'WYGRAŁEŚ',
+            'LOSE' => 'PRZEGRAŁEŚ',
         };
         $output .= '</h1>';
         if ($opponent->status == 'REVENGE') {
@@ -65,5 +73,3 @@ if (isset($_SESSION['player_id'])) {
     $output .= "<div class='btn-div'>$btnOutput</div>";
     echo $output;
 }
-
-//TODO: Dodaj i wyświetlaj licznik wygranych gier i nicki nad tablicą

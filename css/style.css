@@ -1,7 +1,6 @@
 body {
     font-family: 'Rajdhani', sans-serif;
     background-color: violet;
-    height: 100vh;
     width: 100vw;
     margin: 0;
     box-sizing: border-box;
@@ -16,7 +15,7 @@ main {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100%;
+    min-height: 100vh;
     width: 100%;
 }
 
@@ -27,7 +26,7 @@ main {
     align-items: center;
     flex-direction: column;
     font-style: italic;
-    height: 100%;
+    min-height: inherit;
     width: 100%;
     max-width: 700px;
 }
@@ -160,6 +159,7 @@ h2 {
     justify-content: space-between;
     width: 90vw;
     max-width: 700px;
+    flex-direction: row-reverse;
 }
 
 .result-heading {
@@ -252,8 +252,41 @@ table.game-header {
     background-color: springgreen;
 }
 
-@media screen and (max-width: 530px){
-    .main-section h1{
+@media screen and (max-width: 530px) {
+    .main-section h1 {
         font-size: 1.8em;
     }
+
+    .main-section h2 {
+        font-size: 1.3em;
+    }
+    .main-section p, .main-section ol{
+        font-size: 1.2em;
+    }
+
+}
+
+.manual-section {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 20px;
+}
+
+.manual-section h2 {
+    align-self: flex-start;
+}
+
+p {
+    width: 100%;
+}
+
+p, ol {
+    font-size: 1.3rem;
+    align-self: flex-start;
+    margin: 15px 0;
+}
+
+ol {
+    padding-left: 20px;
 }

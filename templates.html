@@ -16,7 +16,8 @@
         <label for='game-data-input-nickname'>
             <h1>Podaj swój nick</h1>
         </label>
-        <input type='text' class='game-data-input' id='game-data-input-nickname' name='nickname' maxlength="7" placeholder="Max. 7 znaków">
+        <input type='text' class='game-data-input' id='game-data-input-nickname' name='nickname' maxlength="7"
+               placeholder="Max. 7 znaków">
 
         <h1>Wybierz swój kolor</h1>
         <div class="pick-color-div pick-color-player">
@@ -38,11 +39,41 @@
         <input type="hidden" class="color-opponent-input" name="opponent_color">
 
         <div class="btn-div">
-            <input type='submit' class='btn-main' value='Zatwierdź'>
             <button class='btn-main'><a href='index.php'>Powrót</a></button>
+            <input type='submit' class='btn-main' value='Zatwierdź'>
         </div>
 
     </form>
     <div class='error-text'></div>
+</template>
 
+<template class="manual-temp">
+    <section class="manual-section">
+        <h1>O Connect4</h1>
+        <p>Connect4 online jest świetnym sposobem na pobudzenie taktycznego myślenia i ducha rywalizacji. </p>
+        <p>Możesz zagrać z kimś znajomym przez internet.</p>
+        <p>Gra polega na wrzucaniu piłek na dół planszy na zmianę z przeciwnikiem.</p>
+        <p>Wygrywa ta osoba która, jako pierwsza ułoży cztery piłki w rzędzie obok siebie (pionowo, poziomo lub na
+            skos).</p>
+        <p>Po zakończonej rundzie możesz zaproponować rywalowi rewanż.</p>
+
+        <h1>Jak grać</h1>
+
+        <h2>Stwórz nową grę</h2>
+        <ol>
+            <li>Kliknij przycisk "Nowa gra"</li>
+            <li>Wpisz swój nick, wybierz kolor twoich piłek oraz kolor piłek przeciwnika</li>
+            <li>Podaj wygenerowane ID gry swojemu przeciwnikowi i zaczekaj aż dołączy!</li>
+        </ol>
+
+        <h2>Dołącz do istniejącej gry</h2>
+        <ol>
+            <li>Kliknij przycisk "Dołącz do gry"</li>
+            <li>Wprowadź otrzymane ID gry od przeciwnika</li>
+            <li>Wpisz swój nick, wybierz kolor twoich piłek oraz kolor piłek przeciwnika</li>
+            <li>Zatwierdź wprowadzone dane i rozpocznij grę!</li>
+        </ol>
+    </section>
+
+    <button class='btn-main'><a href='index.php'>Powrót</a></button>
 </template>

@@ -174,7 +174,11 @@ class Gameplay extends Game
 
     public function displayGameOutput(): string
     {
-        $turn = $this->isPlayersTurn ? 'Twój ruch' : 'Ruch przeciwnika';
+        $turn = '&nbsp';
+        if ($this->player->status == 'PLAYER_MOVE')
+            $turn = 'Twój ruch';
+        elseif ($this->player->status == 'OPPONENT_MOVE')
+            $turn = 'Ruch przeciwnika';
         $output = "<h1>$turn</h1>";
         $output .= $this->displayBoard();
         return $output;
