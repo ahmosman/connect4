@@ -27,7 +27,12 @@ class Config
                 $this->password = "";
             }
             $this->db = "connect4";
-            $this->conn = new mysqli($this->hostname, $this->username, $this->password, $this->db);
+            $this->conn = new mysqli(
+                $this->hostname,
+                $this->username,
+                $this->password,
+                $this->db
+            );
             $this->conn->set_charset("utf8mb4");
         } catch (Exception $e) {
             error_log($e->getMessage());

@@ -1,9 +1,8 @@
 <?php
+
 session_start();
-
+require __DIR__ . '/../../vendor/autoload.php';
 use App\Gameplay;
-
-require_once "../App/Gameplay.php";
 
 if (isset($_SESSION['player_id'])) {
     $gameplay = new Gameplay($_SESSION['player_id']);

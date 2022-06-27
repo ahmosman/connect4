@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-require_once "Game.php";
 
 class Gameplay extends Game
 {
@@ -41,15 +40,18 @@ class Gameplay extends Game
         $board = [];
         // ustawianie wszędzie zer
         for ($h = 0; $h < $this->height; $h++) {
-            for ($w = 0; $w < $this->width; $w++)
+            for ($w = 0; $w < $this->width; $w++) {
                 $board[$h][$w] = 0;
+            }
         }
 
-        foreach ($playerBalls as $pBall)
+        foreach ($playerBalls as $pBall) {
             $board[$pBall[0]][$pBall[1]] = 1;
+        }
 
-        foreach ($opponentBalls as $oBall)
+        foreach ($opponentBalls as $oBall) {
             $board[$oBall[0]][$oBall[1]] = 2;
+        }
         return $board;
     }
 
@@ -81,8 +83,20 @@ class Gameplay extends Game
         $y = $newBalls[1];
         for ($i = $x - 3; $i <= $x; $i++)//wygrana pionowa
         {
-            if ($this->areCellsSet($board, [[$i, $y], [$i + 1, $y], [$i + 2, $y], [$i + 3, $y]])) {
-                if ($board[$i][$y] == 1 && $board[$i + 1][$y] == 1 && $board[$i + 2][$y] == 1 && $board[$i + 3][$y] == 1) {
+            if ($this->areCellsSet(
+                $board,
+                [
+                    [$i, $y],
+                    [$i + 1, $y],
+                    [$i + 2, $y],
+                    [$i + 3, $y]
+                ]
+            )
+            ) {
+                if ($board[$i][$y] == 1 && $board[$i + 1][$y] == 1
+                    && $board[$i + 2][$y] == 1
+                    && $board[$i + 3][$y] == 1
+                ) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
@@ -91,8 +105,20 @@ class Gameplay extends Game
         }
         for ($i = $y - 3; $i <= $y; $i++)//wygrana pozioma
         {
-            if ($this->areCellsSet($board, [[$x, $i], [$x, $i + 1], [$x, $i + 2], [$x, $i + 3]])) {
-                if ($board[$x][$i] == 1 && $board[$x][$i + 1] == 1 && $board[$x][$i + 2] == 1 && $board[$x][$i + 3] == 1) {
+            if ($this->areCellsSet(
+                $board,
+                [
+                    [$x, $i],
+                    [$x, $i + 1],
+                    [$x, $i + 2],
+                    [$x, $i + 3]
+                ]
+            )
+            ) {
+                if ($board[$x][$i] == 1 && $board[$x][$i + 1] == 1
+                    && $board[$x][$i + 2] == 1
+                    && $board[$x][$i + 3] == 1
+                ) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
@@ -101,8 +127,21 @@ class Gameplay extends Game
         }
         for ($i = 0; $i <= 3; $i++)//wygrana na skos (y=-x)
         {
-            if ($this->areCellsSet($board, [[$x - $i, $y + $i], [$x - $i + 1, $y + $i - 1], [$x - $i + 2, $y + $i - 2], [$x - $i + 3, $y + $i - 3]])) {
-                if ($board[$x - $i][$y + $i] == 1 && $board[$x - $i + 1][$y + $i - 1] == 1 && $board[$x - $i + 2][$y + $i - 2] == 1 && $board[$x - $i + 3][$y + $i - 3] == 1) {
+            if ($this->areCellsSet(
+                $board,
+                [
+                    [$x - $i, $y + $i],
+                    [$x - $i + 1, $y + $i - 1],
+                    [$x - $i + 2, $y + $i - 2],
+                    [$x - $i + 3, $y + $i - 3]
+                ]
+            )
+            ) {
+                if ($board[$x - $i][$y + $i] == 1
+                    && $board[$x - $i + 1][$y + $i - 1] == 1
+                    && $board[$x - $i + 2][$y + $i - 2] == 1
+                    && $board[$x - $i + 3][$y + $i - 3] == 1
+                ) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
@@ -111,15 +150,29 @@ class Gameplay extends Game
         }
         for ($i = 0; $i <= 3; $i++)//wygrana na skos (y=x)
         {
-            if ($this->areCellsSet($board, [[$x - 3 + $i, $y - 3 + $i], [$x - 2 + $i, $y - 2 + $i], [$x - 1 + $i, $y - 1 + $i], [$x + $i, $y + $i]])) {
-                if ($board[$x - 3 + $i][$y - 3 + $i] == 1 && $board[$x - 2 + $i][$y - 2 + $i] == 1 && $board[$x - 1 + $i][$y - 1 + $i] == 1 && $board[$x + $i][$y + $i] == 1) {
+            if ($this->areCellsSet(
+                $board,
+                [
+                    [$x - 3 + $i, $y - 3 + $i],
+                    [$x - 2 + $i, $y - 2 + $i],
+                    [$x - 1 + $i, $y - 1 + $i],
+                    [$x + $i, $y + $i]
+                ]
+            )
+            ) {
+                if ($board[$x - 3 + $i][$y - 3 + $i] == 1
+                    && $board[$x - 2 + $i][$y - 2 + $i] == 1
+                    && $board[$x - 1 + $i][$y - 1 + $i] == 1
+                    && $board[$x + $i][$y + $i] == 1
+                ) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
                 }
             }
         }
-        $draw = 0;//zmienna licząca ile piłek jest na planszy, jeżeli piłki wypełniły całą planszę to gra kończy się remisem
+        $draw
+            = 0;//zmienna licząca ile piłek jest na planszy, jeżeli piłki wypełniły całą planszę to gra kończy się remisem
 
         for ($i = 0; $i < $this->height; $i++) {
             for ($j = 0; $j < $this->width; $j++) {
@@ -136,9 +189,11 @@ class Gameplay extends Game
 
     private function areCellsSet(array $arr, array $cells): bool
     {
-        foreach ($cells as $cell)
-            if (!isset($arr[$cell[0]][$cell[1]]))
+        foreach ($cells as $cell) {
+            if (!isset($arr[$cell[0]][$cell[1]])) {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -175,10 +230,11 @@ class Gameplay extends Game
     public function displayGameOutput(): string
     {
         $turn = '&nbsp';
-        if ($this->player->status == 'PLAYER_MOVE')
+        if ($this->player->status == 'PLAYER_MOVE') {
             $turn = 'Twój ruch';
-        elseif ($this->player->status == 'OPPONENT_MOVE')
+        } elseif ($this->player->status == 'OPPONENT_MOVE') {
             $turn = 'Ruch przeciwnika';
+        }
         $output = "<h1>$turn</h1>";
         $output .= $this->displayBoard();
         return $output;

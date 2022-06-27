@@ -5,9 +5,6 @@ namespace App;
 use Exception;
 use mysqli;
 
-require_once "Config.php";
-require_once "Player.php";
-
 class Game
 {
     protected Player $player;
@@ -27,8 +24,10 @@ class Game
             $this->opponent = new Player($this->player->opponentId);
             $this->gameId = $this->player->gameId;
             try {
-                $stmt = $this->conn->prepare("SELECT * FROM games
-                WHERE game_id = ?");
+                $stmt = $this->conn->prepare(
+                    "SELECT * FROM games
+                WHERE game_id = ?"
+                );
                 $stmt->bind_param("i", $this->gameId);
                 $stmt->execute();
                 $gameAssoc = $stmt->get_result()->fetch_assoc();
@@ -49,14 +48,17 @@ class Game
         $uniqueGameId = mt_rand(100000, 999999);
         while (true) {
             try {
-                $stmt = $game->conn->prepare("SELECT * FROM games WHERE unique_game_id = ?");
+                $stmt = $game->conn->prepare(
+                    "SELECT * FROM games WHERE unique_game_id = ?"
+                );
                 $stmt->bind_param("s", $uniqueGameId);
                 $stmt->execute();
                 $check_unique_query = $stmt->get_result();
                 if ($check_unique_query->num_rows > 0) {
                     $uniqueGameId = mt_rand(100000, 999999);
-                } else
+                } else {
                     break;
+                }
             } catch (\Exception $e) {
                 error_log($e->getMessage());
                 exit('Wystąpił błąd');
@@ -64,11 +66,14 @@ class Game
         }
         $game->uniqueGameId = $uniqueGameId;
 
-        $gameId = $game->conn->query("SHOW TABLE STATUS LIKE 'games'")->fetch_assoc()['Auto_increment'];
+        $gameId = $game->conn->query("SHOW TABLE STATUS LIKE 'games'")
+                      ->fetch_assoc()['Auto_increment'];
 
         //tworzenie nowego rekordu w tabeli games z unikalnym id
         try {
-            $stmt = $game->conn->prepare("INSERT INTO games (unique_game_id) VALUES (?)");
+            $stmt = $game->conn->prepare(
+                "INSERT INTO games (unique_game_id) VALUES (?)"
+            );
             $stmt->bind_param("s", $game->uniqueGameId);
             $stmt->execute();
         } catch (Exception $e) {
@@ -85,17 +90,24 @@ class Game
 
     public static function join(string $uniqueGameId): array
     {
-        $result = ['response' => 'Brak gry o podanym ID', 'playerToJoinId' => null];
+        $result = [
+            'response' => 'Brak gry o podanym ID',
+            'playerToJoinId' => null
+        ];
         if ($uniqueGameId > 0) {
             $game = new self();
             try {
-                $stmt = $game->conn->prepare("SELECT * from games where unique_game_id = ?");
+                $stmt = $game->conn->prepare(
+                    "SELECT * from games where unique_game_id = ?"
+                );
                 $stmt->bind_param("s", $uniqueGameId);
                 $stmt->execute();
                 $gameExistsQuery = $stmt->get_result();
                 $stmt->close();
                 if ($gameExistsQuery->num_rows > 0) {
-                    $stmt = $game->conn->prepare("SELECT player_id, status from games g join players p on g.game_id = p.game_id where unique_game_id = ?");
+                    $stmt = $game->conn->prepare(
+                        "SELECT player_id, status from games g join players p on g.game_id = p.game_id where unique_game_id = ?"
+                    );
                     $stmt->bind_param("s", $uniqueGameId);
                     $stmt->execute();
                     $searchPlayerQuery = $stmt->get_result();
@@ -132,7 +144,9 @@ class Game
         $playerId = $this->player->playerId;
         $opponentId = $this->player->opponentId;
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET balls_location = '[]' where player_id in (?, ?)");
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET balls_location = '[]' where player_id in (?, ?)"
+            );
             $stmt->bind_param("ii", $playerId, $opponentId);
             $stmt->execute();
             $this->player->ballsLocation = [];

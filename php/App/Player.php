@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-require_once 'Config.php';
 
 use Exception;
 use mysqli;
@@ -28,8 +27,10 @@ class Player
 
         if (!is_null($playerId)) {
             try {
-                $stmt = $this->conn->prepare("SELECT * FROM players
-                WHERE player_id = ?");
+                $stmt = $this->conn->prepare(
+                    "SELECT * FROM players
+                WHERE player_id = ?"
+                );
                 $stmt->bind_param("i", $playerId);
                 $stmt->execute();
                 $playerAssoc = $stmt->get_result()->fetch_assoc();
@@ -38,7 +39,9 @@ class Player
                 $this->opponentId = $playerAssoc['opponent_id'];
                 $this->status = $playerAssoc['status'];
                 $this->nickname = $playerAssoc['nickname'];
-                $this->ballsLocation = json_decode($playerAssoc['balls_location']);
+                $this->ballsLocation = json_decode(
+                    $playerAssoc['balls_location']
+                );
                 $this->wins = $playerAssoc['wins'];
                 $this->playerColor = $playerAssoc['player_color'];
                 $this->opponentColor = $playerAssoc['opponent_color'];
@@ -59,10 +62,21 @@ class Player
         $player->opponentColor = '#000000';
         $jsonBallsLocation = json_encode($player->ballsLocation);
         try {
-            $player->playerId = $player->conn->query("SHOW TABLE STATUS LIKE 'players'")->fetch_assoc()['Auto_increment'];
-            $stmt = $player->conn->prepare("INSERT INTO players (player_id, status, balls_location, player_color, opponent_color) VALUES
-            (?,?,?,?,?)");
-            $stmt->bind_param("issss", $player->playerId, $player->status, $jsonBallsLocation, $player->playerColor, $player->opponentColor);
+            $player->playerId = $player->conn->query(
+                "SHOW TABLE STATUS LIKE 'players'"
+            )->fetch_assoc()['Auto_increment'];
+            $stmt = $player->conn->prepare(
+                "INSERT INTO players (player_id, status, balls_location, player_color, opponent_color) VALUES
+            (?,?,?,?,?)"
+            );
+            $stmt->bind_param(
+                "issss",
+                $player->playerId,
+                $player->status,
+                $jsonBallsLocation,
+                $player->playerColor,
+                $player->opponentColor
+            );
             $stmt->execute();
         } catch (Exception $e) {
             error_log($e->getMessage());
@@ -73,10 +87,13 @@ class Player
 
     public function setStatus(string $status): void
     {
-        if ($status === 'WIN')
+        if ($status === 'WIN') {
             $this->setWins($this->wins + 1);
+        }
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET status = ? where player_id = ?");
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET status = ? where player_id = ?"
+            );
             $stmt->bind_param("si", $status, $this->playerId);
             $stmt->execute();
             $this->status = $status;
@@ -89,7 +106,9 @@ class Player
     private function setWins(int $wins)
     {
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET wins = ? where player_id = ?");
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET wins = ? where player_id = ?"
+            );
             $stmt->bind_param("ii", $wins, $this->playerId);
             $stmt->execute();
             $this->wins = $wins;
@@ -102,7 +121,9 @@ class Player
     public function setNickname(string $nickname): void
     {
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET nickname = ? where player_id = ?");
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET nickname = ? where player_id = ?"
+            );
             $stmt->bind_param("si", $nickname, $this->playerId);
             $stmt->execute();
             $this->nickname = $nickname;
@@ -117,7 +138,9 @@ class Player
     {
         $jsonBallsLocation = json_encode($ballsLocation);
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET balls_location = ? where player_id = ?");
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET balls_location = ? where player_id = ?"
+            );
             $stmt->bind_param("si", $jsonBallsLocation, $this->playerId);
             $stmt->execute();
             $this->ballsLocation = $ballsLocation;
@@ -130,7 +153,9 @@ class Player
     public function setOpponentId(int $opponentId): void
     {
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET opponent_id = ? where player_id = ?");
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET opponent_id = ? where player_id = ?"
+            );
             $stmt->bind_param("ii", $opponentId, $this->playerId);
             $stmt->execute();
             $this->opponentId = $opponentId;
@@ -143,11 +168,13 @@ class Player
     public function setGameId(int $gameId): void
     {
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET game_id = ? where player_id = ?");
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET game_id = ? where player_id = ?"
+            );
             $stmt->bind_param("ii", $gameId, $this->playerId);
             $stmt->execute();
             $this->gameId = $gameId;
-        }catch (Exception $e){
+        } catch (Exception $e) {
             error_log($e->getMessage());
             exit('Wystąpił błąd');
         }
@@ -156,11 +183,13 @@ class Player
     public function setPlayerColor(string $playerColor): void
     {
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET player_color = ? where player_id = ?");
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET player_color = ? where player_id = ?"
+            );
             $stmt->bind_param("si", $playerColor, $this->playerId);
             $stmt->execute();
             $this->playerColor = $playerColor;
-        }catch (Exception $e){
+        } catch (Exception $e) {
             error_log($e->getMessage());
             exit('Wystąpił błąd');
         }
@@ -169,11 +198,13 @@ class Player
     public function setOpponentColor(string $opponentColor): void
     {
         try {
-            $stmt = $this->conn->prepare("UPDATE players SET opponent_color = ? where player_id = ?");
-            $stmt->bind_param("si",$opponentColor, $this->playerId);
+            $stmt = $this->conn->prepare(
+                "UPDATE players SET opponent_color = ? where player_id = ?"
+            );
+            $stmt->bind_param("si", $opponentColor, $this->playerId);
             $stmt->execute();
             $this->opponentColor = $opponentColor;
-        }catch (Exception $e){
+        } catch (Exception $e) {
             error_log($e->getMessage());
             exit('Wystąpił błąd');
         }

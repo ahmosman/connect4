@@ -1,9 +1,9 @@
 <?php
-session_start();
 
+session_start();
+require __DIR__ . '/../../vendor/autoload.php';
 use App\Player;
 
-include_once "../App/Player.php";
 
 $output = "";
 if (!empty($_POST['nickname'])) {

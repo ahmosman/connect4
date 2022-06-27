@@ -1,8 +1,9 @@
 <?php
+
 session_start();
+require __DIR__ . '/../../vendor/autoload.php';
 use App\Game;
 
-include_once "../App/Game.php";
 if (!empty($_POST['unique_game_id'])) {
     $uniqueGameId = $_POST['unique_game_id'];
     $result = Game::join($uniqueGameId);

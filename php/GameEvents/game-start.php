@@ -1,10 +1,10 @@
 <?php
+
 session_start();
+require __DIR__ . '/../../vendor/autoload.php';
 
-use App\{Player, Game};
-
-include_once "../App/Game.php";
-include_once "../App/Player.php";
+use App\Game;
+use App\Player;
 
 $output = "";
 

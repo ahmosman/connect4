@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 include_once "header.php";
@@ -14,7 +15,8 @@ $_SESSION['env'] = 'prod';
         <section class="main-section">
             <h1>Connect4</h1>
             <input type="submit" class="btn-main new-game-btn" value="Nowa gra">
-            <input type="submit" class="btn-main join-game-btn" value="Dołącz do gry">
+            <input type="submit" class="btn-main join-game-btn"
+                   value="Dołącz do gry">
             <input type="submit" class="btn-main manual-btn" value="O grze">
         </section>
     </main>

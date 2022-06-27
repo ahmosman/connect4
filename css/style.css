@@ -260,7 +260,8 @@ table.game-header {
     .main-section h2 {
         font-size: 1.3em;
     }
-    .main-section p, .main-section ol{
+
+    .main-section p, .main-section ol {
         font-size: 1.2em;
     }
 
