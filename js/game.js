@@ -185,9 +185,3 @@ function putBall (ball) {
   xhr.send()
 }
 
-// // co się dzieje przed zamknięciem witryny
-// window.onbeforeunload = (e) =>{
-//     e.preventDefault();
-//     e.returnValue = exitConfirm();
-// };
-

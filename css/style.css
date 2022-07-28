@@ -4,6 +4,7 @@ body {
     width: 100vw;
     margin: 0;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .hidden {
@@ -65,8 +66,8 @@ h2 {
 }
 
 .loader {
-    border: 5px solid #e1b8fc; /* Light grey */
-    border-top: 5px solid #690569; /* Blue */
+    border: 5px solid #e1b8fc;
+    border-top: 5px solid #690569;
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -124,13 +125,10 @@ h2 {
     margin: 20px;
     max-width: 700px;
     max-height: 700px;
-    /*width: 90vw;*/
-    /*height: 90vw;*/
 
 }
 
 .board-table {
-    /*border-spacing: 7px;*/
     border-radius: 20px;
     background-color: #943094;
     width: 100%;
@@ -180,10 +178,6 @@ table.game-header {
 
 .game-header .player {
     text-align: left;
-}
-
-.game-header td {
-    /*width: 50%;*/
 }
 
 .game-header .opponent {
@@ -290,4 +284,28 @@ p, ol {
 
 ol {
     padding-left: 20px;
+}
+
+/* Simple scrollbar */
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, .9);
 }
