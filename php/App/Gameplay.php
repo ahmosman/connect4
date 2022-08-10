@@ -7,7 +7,7 @@ class Gameplay extends Game
     public int $width;
     public int $height;
     public array $board;
-    public bool $isPlayersTurn;
+    public bool $isPlayerTurn;
 
 // przykład tablicy $board
 //      |---------------|
@@ -28,7 +28,7 @@ class Gameplay extends Game
         parent::__construct($playerId);
         $this->width = explode('x', $this->boardSize)[0];
         $this->height = explode('x', $this->boardSize)[1];
-        $this->isPlayersTurn = ($this->player->status === 'PLAYER_MOVE');
+        $this->isPlayerTurn = ($this->player->status === 'PLAYER_MOVE');
 //      generowanie tablicy
         $this->board = $this->generateBoard();
     }

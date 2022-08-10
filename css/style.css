@@ -107,10 +107,12 @@ h2 {
     font-size: 0.75em;
 }
 
-.error-text {
+.error-message {
+    position: absolute;
     color: darkred;
     width: 150px;
     text-align: center;
+    bottom: 20px;
 }
 
 .game-info-div {

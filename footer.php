@@ -11,14 +11,14 @@ if ($_SESSION['env'] == 'dev') {
             </button>
         </form>
     </footer>
-    <script src="js/testing.js"></script>
+    <script src="js/testing.js" type="module"></script>
     <?php
 }
 ?>
 
-<script src="js/game.js"></script>
+<script src="js/game.js" type="module"></script>
 
-<script src="js/dynamicEvents.js"></script>
+<script src="js/dynamicEvents.js" type="module"></script>
 <script src="js/gameStyles.js"></script>
 </body>
 </html>

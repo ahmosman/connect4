@@ -28,9 +28,7 @@ class Player
         if (!is_null($playerId)) {
             try {
                 $stmt = $this->conn->prepare(
-                    "SELECT * FROM players
-                WHERE player_id = ?"
-                );
+                    "SELECT * FROM players WHERE player_id = ?");
                 $stmt->bind_param("i", $playerId);
                 $stmt->execute();
                 $playerAssoc = $stmt->get_result()->fetch_assoc();

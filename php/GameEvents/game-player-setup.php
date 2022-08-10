@@ -2,10 +2,10 @@
 
 session_start();
 require __DIR__ . '/../../vendor/autoload.php';
+
 use App\Player;
+use App\Response;
 
-
-$output = "";
 if (!empty($_POST['nickname'])) {
     if ($_POST['player_color'] !== $_POST['opponent_color']) {
         if (isset($_SESSION['player_id'])) {
@@ -14,12 +14,10 @@ if (!empty($_POST['nickname'])) {
             $player->setPlayerColor($_POST['player_color']);
             $player->setOpponentColor($_POST['opponent_color']);
             $player->setStatus('WAITING');
-            $output = 'success';
+            Response::makeSuccessResponse();
         }
     } else {
-        $output = "Kolory graczy muszą być różne!";
+        Response::makeErrorResponse('Kolory graczy muszą być różne!');
     }
-} else {
-    $output = "Podaj poprawny nick!";
-}
-echo $output;
+} else
+    Response::makeErrorResponse('Podaj poprawny nick!');

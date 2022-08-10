@@ -3,11 +3,11 @@
 session_start();
 require __DIR__ . '/../../vendor/autoload.php';
 use App\Player;
+use App\Response;
 
 if (isset($_POST['test_player_id']) && !empty($_POST['test_player_id'])) {
     $player = new Player($_POST['test_player_id']);
     $_SESSION['player_id'] = $player->playerId;
-    echo 'success';
-} else {
-    echo 'Nie podano id gracza';
-}
+    Response::makeSuccessResponse();
+} else
+    Response::makeErrorResponse('Nie podano ID gracza');

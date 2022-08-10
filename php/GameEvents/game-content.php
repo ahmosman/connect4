@@ -2,7 +2,8 @@
 
 session_start();
 require __DIR__ . '/../../vendor/autoload.php';
-use App\{Gameplay, Player};
+
+use App\{Gameplay, Player, Response};
 
 if (isset($_SESSION['player_id'])) {
     $output = "";
@@ -72,5 +73,5 @@ if (isset($_SESSION['player_id'])) {
         $btnOutput .= include '../templates/revengeBtn.php';
     }
     $output .= "<div class='btn-div'>$btnOutput</div>";
-    echo $output;
+    Response::makeContentResponse($output);
 }
