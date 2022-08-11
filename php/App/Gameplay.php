@@ -48,7 +48,6 @@ class Gameplay extends Game
             }
         }
 
-
         foreach ($playerBalls as $pBall) {
             $board[$pBall[0]][$pBall[1]] = 1;
         }
@@ -97,12 +96,19 @@ class Gameplay extends Game
                 ]
             )
             ) {
-                if ($board[$i][$y] == 1 && $board[$i + 1][$y] == 1
+                if ($board[$i][$y] == 1
+                    && $board[$i + 1][$y] == 1
                     && $board[$i + 2][$y] == 1
                     && $board[$i + 3][$y] == 1
                 ) {
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
+                    $this->setWinningBalls(
+                        [$i, $y],
+                        [$i + 1, $y],
+                        [$i + 2, $y],
+                        [$i + 3, $y]
+                    );
                     return;
                 }
             }
@@ -119,10 +125,17 @@ class Gameplay extends Game
                 ]
             )
             ) {
-                if ($board[$x][$i] == 1 && $board[$x][$i + 1] == 1
+                if ($board[$x][$i] == 1
+                    && $board[$x][$i + 1] == 1
                     && $board[$x][$i + 2] == 1
                     && $board[$x][$i + 3] == 1
                 ) {
+                    $this->setWinningBalls(
+                        [$x, $i],
+                        [$x, $i + 1],
+                        [$x, $i + 2],
+                        [$x, $i + 3]
+                    );
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
@@ -146,6 +159,12 @@ class Gameplay extends Game
                     && $board[$x - $i + 2][$y + $i - 2] == 1
                     && $board[$x - $i + 3][$y + $i - 3] == 1
                 ) {
+                    $this->setWinningBalls(
+                        [$x - $i, $y + $i],
+                        [$x - $i + 1, $y + $i - 1],
+                        [$x - $i + 2, $y + $i - 2],
+                        [$x - $i + 3, $y + $i - 3]
+                    );
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
@@ -169,6 +188,12 @@ class Gameplay extends Game
                     && $board[$x - 1 + $i][$y - 1 + $i] == 1
                     && $board[$x + $i][$y + $i] == 1
                 ) {
+                    $this->setWinningBalls(
+                        [$x - 3 + $i, $y - 3 + $i],
+                        [$x - 2 + $i, $y - 2 + $i],
+                        [$x - 1 + $i, $y - 1 + $i],
+                        [$x + $i, $y + $i]
+                    );
                     $this->player->setStatus('WIN');
                     $this->opponent->setStatus('LOSE');
                     return;
@@ -250,17 +275,38 @@ class Gameplay extends Game
         for ($tr = $this->height - 1; $tr >= 0; $tr--) {
             $boardHTML .= "<tr data-row='$tr'>";
             for ($td = 0; $td < $this->width; $td++) {
+                $lastPutBallClass = '';
+                $winningBallClass = '';
+
                 $ballClass = match ($this->board[$tr][$td]) {
                     0 => 'empty-ball',
                     1 => 'player-ball',
                     2 => 'opponent-ball'
                 };
-                $lastPutBallClass = ($tr === $this->lastPutBall[0] && $td === $this->lastPutBall[1]) ? 'last-put-ball' : '';
-                $boardHTML .= "<td data-col='$td' class='$ballClass $lastPutBallClass'></td>";
+                if (!in_array($this->player->status, ['WIN', 'LOSE']) && $tr === $this->lastPutBall[0] && $td === $this->lastPutBall[1]) {
+                    $lastPutBallClass = 'last-put-ball';
+                } else {
+                    if ($this->isWinningBall($tr, $td))
+                        $winningBallClass = 'winning-ball';
+                }
+
+                $boardHTML .= "<td data-col='$td' class='$ballClass $lastPutBallClass $winningBallClass'></td>";
             }
             $boardHTML .= "</tr>";
         }
         $boardHTML .= "</table></div>";
         return $boardHTML;
     }
+
+    private function isWinningBall(int $tr, int $td): bool
+    {
+        if ($this->winningBalls) {
+            foreach ($this->winningBalls as $ball) {
+                if ($ball[0] === $tr && $ball[1] === $td)
+                    return true;
+            }
+        }
+        return false;
+    }
+
 }

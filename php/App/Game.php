@@ -10,6 +10,7 @@ class Game
     protected Player $player;
     protected Player $opponent;
     protected string $boardSize;
+    protected array|null $winningBalls;
     private int $gameId;
     private int $uniqueGameId;
     private mysqli $conn;
@@ -25,14 +26,14 @@ class Game
             $this->gameId = $this->player->gameId;
             try {
                 $stmt = $this->conn->prepare(
-                    "SELECT * FROM games
-                WHERE game_id = ?"
+                    "SELECT * FROM games WHERE game_id = ?"
                 );
                 $stmt->bind_param("i", $this->gameId);
                 $stmt->execute();
                 $gameAssoc = $stmt->get_result()->fetch_assoc();
                 $this->boardSize = $gameAssoc['board_size'] ?? '8x8';
                 $this->uniqueGameId = $gameAssoc['unique_game_id'];
+                $this->winningBalls = json_decode($gameAssoc['winning_balls']);
             } catch (Exception $e) {
                 error_log($e->getMessage());
                 exit('Wystąpił błąd');
@@ -67,7 +68,7 @@ class Game
         $game->uniqueGameId = $uniqueGameId;
 
         $gameId = $game->conn->query("SHOW TABLE STATUS LIKE 'games'")
-                      ->fetch_assoc()['Auto_increment'];
+            ->fetch_assoc()['Auto_increment'];
 
         //tworzenie nowego rekordu w tabeli games z unikalnym id
         try {
@@ -141,6 +142,7 @@ class Game
 
     public function resetPlayersBallsLocation()
     {
+        $this->resetWinningBalls();
         $playerId = $this->player->playerId;
         $opponentId = $this->player->opponentId;
         try {
@@ -157,4 +159,32 @@ class Game
         }
     }
 
+    protected function setWinningBalls(array $ball1, array $ball2, array $ball3, array $ball4)
+    {
+        $this->winningBalls = [$ball1, $ball2, $ball3, $ball4];
+        $jsonWinningBalls = json_encode($this->winningBalls);
+        try {
+            $stmt = $this->conn->prepare(
+                "UPDATE games SET winning_balls = ? where game_id = ?"
+            );
+            $stmt->bind_param("si", $jsonWinningBalls, $this->gameId);
+            $stmt->execute();
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            exit('Wystąpił błąd');
+        }
+    }
+    private function resetWinningBalls()
+    {
+        try {
+            $stmt = $this->conn->prepare(
+                "UPDATE games SET winning_balls = '[]' where game_id = ?"
+            );
+            $stmt->bind_param("i",  $this->gameId);
+            $stmt->execute();
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            exit('Wystąpił błąd');
+        }
+    }
 }
