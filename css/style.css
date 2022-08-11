@@ -309,5 +309,9 @@ ol {
 }
 
 *::-webkit-scrollbar-thumb:active {
-    background: rgba(0, 0, 0, .9);
+    background: rgba(0, 0, 0, 0.9);
+}
+
+td.last-put-ball{
+    border: 3px solid #f8aef8;
 }

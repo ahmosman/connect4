@@ -8,6 +8,7 @@ class Gameplay extends Game
     public int $height;
     public array $board;
     public bool $isPlayerTurn;
+    private array $lastPutBall = [null, null];
 
 // przykład tablicy $board
 //      |---------------|
@@ -31,6 +32,8 @@ class Gameplay extends Game
         $this->isPlayerTurn = ($this->player->status === 'PLAYER_MOVE');
 //      generowanie tablicy
         $this->board = $this->generateBoard();
+        if (!empty($this->player->ballsLocation) || !empty($this->opponent->ballsLocation))
+            $this->lastPutBall = $this->isPlayerTurn ? end($this->opponent->ballsLocation) : end($this->player->ballsLocation);
     }
 
     private function generateBoard(): array
@@ -44,6 +47,7 @@ class Gameplay extends Game
                 $board[$h][$w] = 0;
             }
         }
+
 
         foreach ($playerBalls as $pBall) {
             $board[$pBall[0]][$pBall[1]] = 1;
@@ -251,7 +255,8 @@ class Gameplay extends Game
                     1 => 'player-ball',
                     2 => 'opponent-ball'
                 };
-                $boardHTML .= "<td data-col='$td' class='$ballClass'></td>";
+                $lastPutBallClass = ($tr === $this->lastPutBall[0] && $td === $this->lastPutBall[1]) ? 'last-put-ball' : '';
+                $boardHTML .= "<td data-col='$td' class='$ballClass $lastPutBallClass'></td>";
             }
             $boardHTML .= "</tr>";
         }

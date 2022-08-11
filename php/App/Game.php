@@ -90,7 +90,7 @@ class Game
 
     public static function join(string $uniqueGameId): array
     {
-        $result = [
+        $joinResult = [
             'response' => 'Brak gry o podanym ID',
             'playerToJoinId' => null
         ];
@@ -113,11 +113,11 @@ class Game
                     $searchPlayerQuery = $stmt->get_result();
                     while ($player = $searchPlayerQuery->fetch_assoc()) {
                         if ($player['status'] == 'NONE') {
-                            $result['response'] = 'success';
-                            $result['playerToJoinId'] = $player['player_id'];
-                            return $result;
+                            $joinResult['response'] = 'success';
+                            $joinResult['playerToJoinId'] = $player['player_id'];
+                            return $joinResult;
                         }
-                        $result['response'] = 'Ktoś inny już dołączył do gry';
+                        $joinResult['response'] = 'Ktoś inny już dołączył do gry';
                     }
                 }
             } catch (Exception $e) {
@@ -125,7 +125,7 @@ class Game
                 exit('Wystąpił błąd');
             }
         }
-        return $result;
+        return $joinResult;
     }
 
     public function getUniqueGameId(): string
