@@ -20,7 +20,7 @@ class Player
 //kolejność statusów: NONE -> WAITING -> CONFIRMING -> READY -> PLAYER/OPPONENT_MOVE -> WIN/LOSE/DRAW -> REVENGE
     private mysqli $conn;
 
-    public function __construct(int $playerId = null)
+    public function __construct(?int $playerId = null)
     {
         $config = new Config();
         $this->conn = $config->getConn();
@@ -60,22 +60,19 @@ class Player
         $player->opponentColor = '#000000';
         $jsonBallsLocation = json_encode($player->ballsLocation);
         try {
-            $player->playerId = $player->conn->query(
-                "SHOW TABLE STATUS LIKE 'players'"
-            )->fetch_assoc()['Auto_increment'];
             $stmt = $player->conn->prepare(
-                "INSERT INTO players (player_id, status, balls_location, player_color, opponent_color) VALUES
-            (?,?,?,?,?)"
+                "INSERT INTO players (status, balls_location, player_color, opponent_color) VALUES
+            (?,?,?,?)"
             );
             $stmt->bind_param(
-                "issss",
-                $player->playerId,
+                "ssss",
                 $player->status,
                 $jsonBallsLocation,
                 $player->playerColor,
                 $player->opponentColor
             );
             $stmt->execute();
+            $player->playerId = $stmt->insert_id;
         } catch (Exception $e) {
             error_log($e->getMessage());
             exit('Wystąpił błąd');

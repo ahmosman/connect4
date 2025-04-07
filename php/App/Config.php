@@ -2,12 +2,14 @@
 
 namespace App;
 
+use Dotenv\Dotenv;
 use Exception;
 use mysqli;
 
 class Config
 {
     private string $hostname;
+    private ?string $port;
     private string $username;
     private string $password;
     private string $db;
@@ -15,23 +17,22 @@ class Config
 
     public function __construct()
     {
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         try {
-            if ($_SESSION['env'] == 'prod') {
-                $this->hostname = get_cfg_var("db.hostname");
-                $this->username = get_cfg_var("db.username");
-                $this->password = get_cfg_var("db.password");
-            } else {
-                $this->hostname = "localhost";
-                $this->username = "root";
-                $this->password = "";
-            }
-            $this->db = "connect4";
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+            $dotenv->load();
+    
+            $this->hostname = $_ENV['DB_HOSTNAME'];
+            $this->username = $_ENV['DB_USERNAME'];
+            $this->password = $_ENV['DB_PASSWORD'];
+            $this->db = $_ENV['DB_NAME'];
+            $this->port = $_ENV['DB_PORT'] ?? null;
+    
             $this->conn = new mysqli(
                 $this->hostname,
                 $this->username,
                 $this->password,
-                $this->db
+                $this->db,
+                $this->port
             );
             $this->conn->set_charset("utf8mb4");
         } catch (Exception $e) {

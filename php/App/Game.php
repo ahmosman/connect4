@@ -67,9 +67,6 @@ class Game
         }
         $game->uniqueGameId = $uniqueGameId;
 
-        $gameId = $game->conn->query("SHOW TABLE STATUS LIKE 'games'")
-            ->fetch_assoc()['Auto_increment'];
-
         //tworzenie nowego rekordu w tabeli games z unikalnym id
         try {
             $stmt = $game->conn->prepare(
@@ -77,6 +74,7 @@ class Game
             );
             $stmt->bind_param("s", $game->uniqueGameId);
             $stmt->execute();
+            $gameId = $stmt->insert_id;
         } catch (Exception $e) {
             error_log($e->getMessage());
             exit('Wystąpił błąd');
