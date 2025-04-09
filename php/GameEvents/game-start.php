@@ -2,6 +2,7 @@
 
 session_start();
 require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../cors.php';
 
 use App\Game;
 use App\Player;
@@ -15,5 +16,7 @@ $player->setOpponentId($opponent->playerId);
 $opponent->setOpponentId($player->playerId);
 $game = Game::create($player, $opponent);
 $_SESSION['player_id'] = $player->playerId;
-Response::makeSuccessResponse();
+Response::makeJsonResponse([
+    'unique_game_id' => $game->getUniqueGameId(),
+]);
 

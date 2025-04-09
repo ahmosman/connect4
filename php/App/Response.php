@@ -11,6 +11,7 @@ class Response
 
     private static function getJsonResponse(bool $success = true, string $errorMessage = '', string $content = ''): string
     {
+        header('Content-Type: application/json');
         $response = [
             'success' => $success,
             'errorMessage' => $errorMessage,
@@ -28,5 +29,10 @@ class Response
     {
         echo self::getJsonResponse(true, '', $content);
 
+    }
+
+    public static function makeJsonResponse(array $data)
+    {
+        echo self::getJsonResponse(true, '', json_encode($data));
     }
 }
