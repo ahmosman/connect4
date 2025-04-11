@@ -16,7 +16,7 @@ class Game
     private mysqli $conn;
 
 
-    public function __construct(int $playerId = null)
+    public function __construct(?int $playerId = null)
     {
         $config = new Config();
         $this->conn = $config->getConn();

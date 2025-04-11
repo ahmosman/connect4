@@ -24,7 +24,7 @@ class Gameplay extends Game
 //  2 - przeciwnik
 // $ballsLocation - współrzędne — przykład dla przeciwnika powyżej: [[0,1],[0,3],[1,2],[2,0],[2,3]]
 
-    public function __construct(int $playerId = null)
+    public function __construct(?int $playerId = null)
     {
         parent::__construct($playerId);
         $this->width = explode('x', $this->boardSize)[0];
@@ -309,4 +309,28 @@ class Gameplay extends Game
         return false;
     }
 
+    public function getBoard(): array
+    {
+        return $this->board;
+    }
+    
+    public function isPlayerTurn(): bool
+    {
+        return $this->isPlayerTurn;
+    }
+    
+    public function getLastPutBall(): ?array
+    {
+        // If the lastPutBall contains [null, null], return null instead
+        if ($this->lastPutBall[0] === null && $this->lastPutBall[1] === null) {
+            return null;
+        }
+        return $this->lastPutBall;
+    }
+    
+    public function getWinningBalls(): ?array
+    {
+        // Return the winning balls or an empty array if not available
+        return $this->winningBalls ?? [];
+    }
 }
