@@ -15,7 +15,6 @@ if (isset($_SESSION['player_id'])) {
         // Aktualizacja statusów zgodnie z game-content.php
         // Włączamy te same zmiany statusów
         if ($me->status == 'WAITING' && $opponent->status == 'WAITING') {
-            // Ustawiamy status CONFIRMING, tak jak w game-content.php
             $gameplay->setPlayersStatus('CONFIRMING');
         } elseif ($me->status == 'READY' && $opponent->status == 'READY') {
             // Losowanie ruchu tylko po stronie gracza, który stworzył grę
@@ -81,6 +80,7 @@ if (isset($_SESSION['player_id'])) {
             'opponentColor' => $opponent->opponentColor ?? '',
             'lastPutBall' => $gameplay->getLastPutBall(),
             'winningBalls' => $gameplay->getWinningBalls() ?? [],
+            'gameId' => $gameplay->getUniqueGameId(),
         ];
 
         Response::makeJsonResponse($gameState);

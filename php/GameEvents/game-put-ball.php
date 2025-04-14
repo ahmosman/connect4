@@ -9,7 +9,7 @@ use App\Response;
 if (isset($_SESSION['player_id'])) {
     $gameplay = new Gameplay($_SESSION['player_id']);
     if ($gameplay->isPlayerTurn) {
-        $gameplay->putBall($_GET['col']);
+        $gameplay->putBall($_POST['column']);
         Response::makeSuccessResponse();
     }else
         Response::makeErrorResponse('');
