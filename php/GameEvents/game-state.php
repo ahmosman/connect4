@@ -71,6 +71,7 @@ if (isset($_SESSION['player_id'])) {
             'height' => $height,
             'isPlayerTurn' => $me->status == 'PLAYER_MOVE',
             'playerStatus' => $me->status,
+            'opponentStatus' => $opponent->status,
             'gameInfo' => $gameInfo,
             'playerNickname' => $me->nickname ?? '',
             'playerWins' => $me->wins ?? 0,
@@ -88,5 +89,5 @@ if (isset($_SESSION['player_id'])) {
         Response::makeErrorResponse('Error fetching game state: ' . $e->getMessage());
     }
 } else {
-    Response::makeErrorResponse('Not logged in');
+    Response::makeSuccessResponse('Not logged in');
 }

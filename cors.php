@@ -6,7 +6,7 @@ $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 
 $allowed_origins = [
     'http://localhost:8081',
-    'http://192.168.1.8:8081',
+    'http://192.168.1.10:8081',
 ];
 
 
