@@ -1,8 +1,8 @@
 <?php
 
 session_start();
-require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../cors.php';
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../cors.php';
 
 use App\Game;
 use App\Player;

@@ -1,39 +1,14 @@
 <?php
 
 session_start();
-require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../cors.php';
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../cors.php';
 
 use App\{Gameplay, Player, Response};
 
 if (isset($_SESSION['player_id'])) {
     try {
         $gameplay = new Gameplay($_SESSION['player_id']);
-        $me = new Player($_SESSION['player_id']);
-        $opponent = new Player($me->opponentId);
-
-        // Aktualizacja statusów zgodnie z game-content.php
-        // Włączamy te same zmiany statusów
-        if ($me->status == 'WAITING' && $opponent->status == 'WAITING') {
-            $gameplay->setPlayersStatus('CONFIRMING');
-        } elseif ($me->status == 'READY' && $opponent->status == 'READY') {
-            // Losowanie ruchu tylko po stronie gracza, który stworzył grę
-            if ($me->playerId < $opponent->playerId) {
-                $_SESSION['turn'] = mt_rand(0, 1);
-                if ($_SESSION['turn']) {
-                    $me->setStatus('PLAYER_MOVE');
-                    $opponent->setStatus('OPPONENT_MOVE');
-                } else {
-                    $me->setStatus('OPPONENT_MOVE');
-                    $opponent->setStatus('PLAYER_MOVE');
-                }
-            }
-        } elseif ($me->status == 'REVENGE' && $opponent->status == 'REVENGE') {
-            $gameplay->setPlayersStatus('CONFIRMING');
-            $gameplay->resetPlayersBallsLocation();
-        }
-
-        // Pobierz odświeżoną instancję gracza po zmianach statusu
         $me = new Player($_SESSION['player_id']);
         $opponent = new Player($me->opponentId);
 

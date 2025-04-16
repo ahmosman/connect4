@@ -1,27 +1,19 @@
 <?php
+header('Content-Type: application/json');
+http_response_code(200);
 
-session_start();
-
-include_once "header.php";
-
-$_SESSION['env'] = 'prod';
-//**************TESTING
-// dla testowania konkretnego gracza można przypisać poniżej jego id do zmiennej $_SESSION['player_id']
-//$_SESSION['player_id'] = 21;
-//**************TESTING
-?>
-
-    <main>
-        <section class="main-section">
-            <h1>Connect4</h1>
-            <input type="submit" class="btn-main new-game-btn" value="Nowa gra">
-            <input type="submit" class="btn-main join-game-btn" value="Dołącz do gry">
-            <input type="submit" class="btn-main manual-btn" value="O grze">
-        </section>
-        <div class="error-message"></div>
-    </main>
-
-<?php
-include_once "templates.html";
-include_once "footer.php";
-?>
+echo json_encode([
+    'message' => 'Welcome to the Connect4 API!',
+    'info' => 'This is an API instance. Please use the proper endpoints to interact with the system.',
+    'endpoints (begin with api/)' => [
+        'game-confirm.php' => 'Confirm readiness for the game.',
+        'game-disconnect.php' => 'Disconnect from the game and update the status.',
+        'game-join.php' => 'Join an existing game using a unique game ID.',
+        'game-player-setup.php' => 'Set up player details such as nickname and colors.',
+        'game-put-ball.php' => 'Place a ball in the specified column during your turn.',
+        'game-revenge.php' => 'Request a rematch after a game ends.',
+        'game-start.php' => 'Start a new game and initialize players.',
+        'game-state.php' => 'Fetch the current state of the game.',
+    ]
+]);
+exit;

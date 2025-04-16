@@ -1,9 +1,10 @@
 <?php
 
 session_start();
-require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../cors.php';
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../cors.php';
 
+use App\GameState;
 use App\Player;
 use App\Response;
 
@@ -15,6 +16,7 @@ if (!empty($_POST['nickname'])) {
             $player->setPlayerColor($_POST['player_color']);
             $player->setOpponentColor($_POST['opponent_color']);
             $player->setStatus('WAITING');
+            GameState::update();
             Response::makeSuccessResponse();
         }
     } else {
