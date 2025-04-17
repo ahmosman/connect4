@@ -1,0 +1,14 @@
+{
+  "name": "connect4-websocket-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for the Connect4 game.",
+  "main": "websocket-server.js",
+  "scripts": {
+    "start": "node websocket/websocket-server.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.5.4"
+  },
+  "author": "",
+  "license": "MIT"
+}

@@ -53,7 +53,7 @@ if (isset($_SESSION['player_id'])) {
             'playerColor' => $me->playerColor ?? '',
             'opponentNickname' => $opponent->nickname ?? '',
             'opponentWins' => $opponent->wins ?? 0,
-            'opponentColor' => $opponent->opponentColor ?? '',
+            'opponentColor' => $me->opponentColor ?? '',
             'lastPutBall' => $gameplay->getLastPutBall(),
             'winningBalls' => $gameplay->getWinningBalls() ?? [],
             'gameId' => $gameplay->getUniqueGameId(),
