@@ -1,7 +1,13 @@
 const port = 3000; // Port for the WebSocket server
 
 const io = require('socket.io')(port, {
-    cors: { origin: '*' }, // Allow all origins
+    path: '/socket.io/',
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+    transports: ['websocket', 'polling']
 });
 
 io.on('connection', (socket) => {
